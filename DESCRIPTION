@@ -1,5 +1,4 @@
-Package: NEesp
-Title: Generate Preliminary ESP Reports for the Northeast
+Title: Shiny App to Generate Preliminary ESP Reports for the Northeast
 Version: 0.0.0.9000
 Description: Generates preliminary Ecosystem and Socioeconomic Profiles for Northeast and Mid-Atlantic USA fishery stocks.
 License: file LICENSE
@@ -8,7 +7,6 @@ Authors@R: person("Abigail", "Tyrell", email = "abigail.tyrell@noaa.gov",
 Imports:
     AICcmodavg,
     bookdown,
-    devtools,
     DT,
     FSA,
     ggpubr,
@@ -21,11 +19,8 @@ Imports:
     here,
     nlstools,
     papeR,
-    parallel,
     quantmod,
     raster,
-    remotes,
-    renv,
     rfishbase,
     rgdal,
     rgeos,
@@ -41,11 +36,8 @@ Imports:
     usethis,
     utils,
     viridis,
-    ymlthis,
     zoo,
-    dbutils,
     assessmentdata,
-    survdat,
     rnaturalearthhires,
     nmfspalette,
     TMBhelper,
@@ -57,9 +49,7 @@ Suggests:
     tabulizer,
     tabulizerjars
 Remotes:
-    andybeet/dbutils,
     NOAA-EDAB/assessmentdata,
-    NOAA-EDAB/survdat,
     ropensci/rnaturalearthhires,
     nmfs-general-modeling-tools/nmfspalette,
     kaskr/TMB_contrib_R/TMBhelper,

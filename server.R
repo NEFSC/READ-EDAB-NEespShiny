@@ -6,9 +6,11 @@ if (!"NEesp" %in% installed.packages()) {
   devtools::install_github("NOAA-EDAB/esp_data_aggretation@package")
 }
 
-render_reg_report_shiny <- function(stock_var, epus_var, region_var, 
+render_reg_report_shiny <- function(stock_var, epus_var  = "MAB", 
+                                    region_var = "Mid", 
                                     remove_var = FALSE, file_var,
-                                   lag_var = 0, save_var = TRUE) {
+                                    lag_var = 0, save_var = TRUE, 
+                                    out = "word") {
   starting_dir <- getwd()
   
   new_dir <- tempdir()
@@ -57,12 +59,13 @@ render_reg_report_shiny <- function(stock_var, epus_var, region_var,
 
 `%>%` <- magrittr::`%>%`
 library(NEesp)
+library(shiny)
 
 server <- function(input, output){
   
   output$report <- downloadHandler(
     # For PDF output, change this to "report.pdf"
-    filename = "report.docx",
+    filename = "report.doc",
     content = function(file) {
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
@@ -74,13 +77,9 @@ server <- function(input, output){
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
       # from the code in this app).
-      render_reg_report_shiny(stock_var = input$species, 
-                                          epus_var = "MAB", 
-                                          region_var = "Mid", 
-                                          remove_var = FALSE, 
-                                          file_var = file,
-                                          lag_var = 0,  
-                                          save_var = FALSE)
+      render_reg_report_shiny(stock_var = input$species,
+                              file_var = file,
+                              save_var = FALSE)
 
     }
   )

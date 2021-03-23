@@ -2,33 +2,86 @@ if (!"devtools" %in% installed.packages()) {
   install.packages("devtools")
 }
 
-#devtools::install_deps(dependencies = TRUE, upgrade = FALSE)
+if (!"NEesp" %in% installed.packages()) {
+  devtools::install_github("NOAA-EDAB/esp_data_aggretation@package")
+}
+
+render_reg_report_shiny <- function(stock_var, epus_var, region_var, 
+                                    remove_var = FALSE, file_var,
+                                   lag_var = 0, save_var = TRUE) {
+  starting_dir <- getwd()
+  
+  new_dir <- tempdir()
+  
+  file.copy(
+      from = list.files(system.file("correlation_bookdown_template", package = "NEesp"),
+                        full.names = TRUE
+      ),
+      to = here::here(new_dir),
+      overwrite = TRUE
+    ) %>%
+      invisible()
+ 
+  setwd(here::here(new_dir))
+  
+  if(save_var){
+    dir.create("data",
+               recursive = TRUE
+    )
+  }
+  
+  
+  # render bookdown
+    bookdown::render_book(
+      input = ".",
+      params = list(
+        lag = lag_var,
+        stock = stock_var,
+        region = region_var,
+        epu = c(epus_var, c("All", "all", "NE")),
+        path = here::here(new_dir, "figures//"),
+        save = save_var,
+        remove_recent = remove_var
+      ),
+      output_format = bookdown::word_document2(),
+      envir = new.env(parent = globalenv()),
+      output_file = file_var,
+      clean = TRUE,
+      quiet = FALSE
+    )
+  
+
+  setwd(starting_dir)
+
+}
+
+`%>%` <- magrittr::`%>%`
+library(NEesp)
 
 server <- function(input, output){
-  re_message <- eventReactive(
-    input$button, 
-    {
-      print(paste("This is a test!", input$species))
-      }
-  )
   
-  re_report <- eventReactive(
-    input$button, 
-    {
-      #NEesp::render_ind_report(input$species)
+  output$report <- downloadHandler(
+    # For PDF output, change this to "report.pdf"
+    filename = "report.docx",
+    content = function(file) {
+      # Copy the report file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+
+      # Set up parameters to pass to Rmd document
+      #params <- list(n = input$slider)
       
-      lapply(list.files(here::here("action_reports", input$species),
-                        full.names = TRUE,
-                        pattern = ".html"),
-        includeHTML
-        )
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      render_reg_report_shiny(stock_var = input$species, 
+                                          epus_var = "MAB", 
+                                          region_var = "Mid", 
+                                          remove_var = FALSE, 
+                                          file_var = file,
+                                          lag_var = 0,  
+                                          save_var = FALSE)
+
     }
   )
-
-  output$message <- renderText({ 
-    re_message()
-  })
-  output$report <- renderUI({
-    re_report()
-  })
 }

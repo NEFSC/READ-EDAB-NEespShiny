@@ -5,7 +5,24 @@ ui <- fluidPage(
   navlistPanel(
     
     widths = c(2, 10),
+
+    # indicator reports
+    tabPanel(
+      
+      "Indicator Reports",
+      
+      h2("Report parameters"),
+      
+      selectInput(
+        inputId = "ind_species",
+        label = "Species",
+        choices = NEesp::species_key$Species
+      ),
+      
+      downloadButton("ind_report", "Generate indicator report")
+    ),
     
+    # regression reports
     tabPanel(
       
       "Regression Reports",
@@ -57,21 +74,6 @@ ui <- fluidPage(
         cellWidths = c("40%", "60%"),
         cellArgs = list(style = "overflow-x: hidden;")
       )
-    ),
-    
-    tabPanel(
-      
-      "Indicator Reports",
-      
-      h2("Report parameters"),
-      
-      selectInput(
-        inputId = "ind_species",
-        label = "Species",
-        choices = NEesp::species_key$Species
-      ),
-      
-      downloadButton("ind_report", "Generate indicator report")
     )
   )
 )

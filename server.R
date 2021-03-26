@@ -42,7 +42,7 @@ server <- function(input, output) {
   output$report <- downloadHandler(
 
     filename = function() {
-      paste(input$ind_species, "_regression_report.zip", sep = "")
+      paste(input$species, "_regression_report.zip", sep = "")
     },
     content = function(file) {
 
@@ -60,7 +60,7 @@ server <- function(input, output) {
         region_var = input$region,
         remove_var = input$remove,
         lag_var = as.numeric(input$lag),
-        file_var = paste(input$ind_species, "_regression_report.docx", sep = ""),
+        file_var = paste(input$species, "_regression_report.docx", sep = ""),
         save_var = TRUE
       )
 

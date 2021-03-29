@@ -52,13 +52,13 @@ ui <- fluidPage(
 
           selectInput(
             inputId = "lag",
-            label = "Lag correlation by how many years? \n(for predictive potential)",
+            label = HTML("Lag correlation by how many years? <br/> (for predictive potential)"),
             choices = 0:10
           ),
 
           selectInput(
             inputId = "remove",
-            label = "Remove past 10 years of data? \n(for predictive potential)",
+            label = HTML("Remove past 10 years of data? <br/> (for predictive potential)"),
             choices = c("FALSE", "TRUE")
           ),
 
@@ -66,7 +66,8 @@ ui <- fluidPage(
         ),
 
         verticalLayout(
-          h2("Possible species - region - EPU combinations"),
+          h2(HTML("Possible <br/> species - region - EPU <br/> combinations"),
+             align = "center"),
           DT::dataTableOutput("table",
             height = "100%"
           )

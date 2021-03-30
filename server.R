@@ -1,5 +1,23 @@
 server <- function(input, output) {
   
+  # indicators
+  
+  re <- eventReactive(
+    input$go, { path <- render_ind_page_shiny(x = input$i_species,
+                                             input = here::here("indicator_bookdown_template-dev"),
+                                             file = input$indicator)})
+
+  output$markdown <- renderUI({
+    re()
+    
+    name <- input$indicator %>%
+      stringr::str_replace(".Rmd", ".html")
+    
+    
+    includeHTML(paste(tempdir(), "BOOK", "output.html", sep = "/"))
+   # includeHTML(paste(tempdir(), "BOOK", "figures", sep = "/"))
+  })
+  
   # indicator report
   output$ind_report <- downloadHandler(
     

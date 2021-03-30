@@ -5,6 +5,32 @@ ui <- fluidPage(
   navlistPanel(
     
     widths = c(2, 10),
+    
+    tabPanel(
+      "Explore Indicator Data",
+      
+      h2("Choose species"),
+      
+      selectInput(
+        inputId = "i_species",
+        label = "Species",
+        choices = NEesp::species_key$Species
+      ),
+      
+      h2("Choose indicator"),
+      
+      selectInput(
+        inputId = "indicator",
+        label = "Indicator",
+        choices = list.files(here::here("indicator_bookdown_template-dev"),
+                             pattern = ".Rmd")
+      ),
+      
+      actionButton("go", "click"),
+      
+      uiOutput('markdown')
+      
+    ),
 
     # indicator reports
     tabPanel(

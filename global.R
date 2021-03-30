@@ -11,6 +11,8 @@ library(NEesp)
 library(shiny)
 library(ggplot2)
 
+# render shiny report ----
+
 render_reg_report_shiny <- function(stock_var,
                                     epus_var = "MAB",
                                     region_var = "Mid",
@@ -96,6 +98,8 @@ render_reg_report_shiny <- function(stock_var,
 
   utils::zip(zipfile = "testZip", files = files2zip)
 }
+
+# render indicator report ----
 
 render_ind_report_shiny <- function(x, 
                                     save_data = TRUE, 
@@ -190,4 +194,79 @@ render_ind_report_shiny <- function(x,
     )
     
     utils::zip(zipfile = "testZip", files = files2zip)
+}
+
+# render shiny page ----
+
+render_ind_page_shiny <- function(x,
+                                  input,
+                                  file) {
+  
+  new_dir <- tempdir()
+  setwd(new_dir)
+  
+  dir.create("BOOK")
+  setwd("BOOK")
+  
+  this_dir <- getwd()
+  
+  # make sure directory is clean
+  existing_files <- list.files(
+    full.names = TRUE,
+    recursive = TRUE,
+    all.files = TRUE
+  )
+  
+  if (length(existing_files) > 0) {
+    file.remove(existing_files)
+  }
+  
+  if(input == "package"){
+    prefix <- system.file("indicator_bookdown_template", package = "NEesp")
+    file.copy(
+      from = paste(prefix, c("index.Rmd", file), sep = "/"),
+      to = this_dir,
+      overwrite = TRUE
+    ) %>%
+      invisible()
+    
+    params_list <- list(
+      species_ID = x,
+      path = here::here("www//"),
+      ricky_survey_data = NEesp::bio_survey,
+      save = FALSE
+    )
+    
+  } else {
+    
+    prefix <- input
+    file.copy(
+      from = paste(prefix, c("index.Rmd", file), sep = "/"),
+      to = this_dir,
+      overwrite = TRUE
+    ) %>%
+      invisible()
+    
+    params_list <- list(
+      species_ID = x,
+      path = here::here("www//"),
+      ricky_survey_data = NEesp::bio_survey,
+      save = FALSE,
+      file = "html"
+    )
+  }
+
+  bookdown::render_book(
+    input = ".",
+    params = params_list, 
+    output_format = bookdown::html_document2(),
+    envir = new.env(parent = globalenv()),
+    output_file = "output.html",
+    output_dir = this_dir,
+    intermediates_dir = this_dir,
+    knit_root_dir = this_dir,
+    clean = TRUE,
+    quiet = FALSE
+  )
+  
 }

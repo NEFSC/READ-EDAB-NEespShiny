@@ -1,0 +1,11 @@
+fig:abun-survey
+fig:unnamed-chunk-8
+fig:unnamed-chunk-9
+fig:unnamed-chunk-10
+fig:abun-survey-swept
+abundance
+survey-abundance-raw-measurements
+survey-abundance-swept-area-estimates
+assessment-abundance
+survey-summary
+data

@@ -28,7 +28,7 @@ ui <- fluidPage(
       
       actionButton("go", "click"),
       
-      uiOutput('markdown')
+      htmlOutput('markdown')
       
     ),
 

@@ -21,3 +21,4 @@
 ^shiny$
 ^test$
 ^\.Rproj\.user$
+^NEespShiny\.Rproj$

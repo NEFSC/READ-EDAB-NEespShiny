@@ -1,17 +1,19 @@
-if (!"devtools" %in% installed.packages()) {
-  install.packages("devtools")
-}
 
-if (!"NEesp" %in% installed.packages()) {
-  devtools::install_github("NOAA-EDAB/esp_data_aggretation@package")
-}
-
-`%>%` <- magrittr::`%>%`
-library(NEesp)
-library(shiny)
-library(ggplot2)
-
-# render shiny report ----
+#' Render shiny regression report
+#'
+#' Render shiny regression report
+#'
+#' @param stock_var 
+#' @param epus_var 
+#' @param region_var
+#' @param remove_var
+#' @param lag_var
+#' @param save_var
+#' @param file_var
+#' 
+#' @importFrom magrittr %>%
+#'
+#' @export
 
 render_reg_report_shiny <- function(stock_var,
                                     epus_var = "MAB",
@@ -19,17 +21,18 @@ render_reg_report_shiny <- function(stock_var,
                                     remove_var = FALSE,
                                     lag_var = 0,
                                     save_var = TRUE,
+                                    this_dir,
                                     file_var) {
+  #new_dir <- tempdir()
+  
+  #setwd(new_dir)
+  #this_dir <- paste(new_dir, "BOOK", sep = "/")
+  #dir.create(this_dir)
+  #setwd("BOOK")
 
-  new_dir <- tempdir()
-  
-  setwd(new_dir)
-  dir.create("BOOK")
-  setwd("BOOK")
-  this_dir <- getwd()
-  
   # make sure directory is clean
   existing_files <- list.files(
+    this_dir,
     full.names = TRUE,
     recursive = TRUE,
     all.files = TRUE
@@ -41,6 +44,7 @@ render_reg_report_shiny <- function(stock_var,
   
   file.copy(
     from = list.files(system.file("correlation_bookdown_template", package = "NEesp"),
+                      pattern = ".Rmd",
                       full.names = TRUE
     ),
     to = this_dir,
@@ -53,6 +57,11 @@ render_reg_report_shiny <- function(stock_var,
                recursive = TRUE
     )
   }
+  
+  # bookdown needs the files in the working directory... can't find a way around it
+  # changing `input = ` doesn't work
+  # putting full file path to temp files in yml doesn't work
+  setwd(this_dir)
   
   # render bookdown
   bookdown::render_book(
@@ -78,6 +87,7 @@ render_reg_report_shiny <- function(stock_var,
   )
   
   # zip files
+  #setwd(this_dir)
   files2zip <- c(
     list.files(
       full.names = TRUE,
@@ -95,15 +105,29 @@ render_reg_report_shiny <- function(stock_var,
       pattern = ".csv"
     )
   )
+  
+  utils::zip("testZip",
+             files = files2zip)
 
-  utils::zip(zipfile = "testZip", files = files2zip)
 }
 
-# render indicator report ----
+#' Render shiny indicator report
+#'
+#' Render shiny indicator report
+#'
+#' @param x 
+#' @param save_data 
+#' @param input
+#' @param file_var
+#' 
+#' @importFrom magrittr %>%
+#' @importFrom ggplot2 .pt
+#'
+#' @export
 
 render_ind_report_shiny <- function(x, 
                                     save_data = TRUE, 
-                                    input,
+                                    input = "package",
                                     file_var) {
 
   new_dir <- tempdir()
@@ -196,11 +220,25 @@ render_ind_report_shiny <- function(x,
     utils::zip(zipfile = "testZip", files = files2zip)
 }
 
-# render shiny page ----
+#' Render shiny indicator page
+#'
+#' Render shiny indicator page
+#'
+#' @param x 
+#' @param input
+#' @param file_var
+#' 
+#' @importFrom magrittr %>%
+#' @importFrom ggplot2 .pt
+#'
+#' @export
 
 render_ind_page_shiny <- function(x,
                                   input,
                                   file) {
+  
+  start_dir <- getwd()
+  on.exit(setwd(start_dir), add = TRUE)
   
   new_dir <- tempdir()
   setwd(new_dir)
@@ -237,12 +275,21 @@ render_ind_page_shiny <- function(x,
       save = FALSE
     )
     
+    name <- "package_output.html"
+    
   } else {
     
-    prefix <- input
+    # copy index file, will be overwritten if user uploads one
     file.copy(
-      from = paste(prefix, c("index.Rmd", file), sep = "/"),
+      from = system.file("indicator_bookdown_template/index.Rmd", package = "NEesp"),
       to = this_dir,
+      overwrite = TRUE
+    ) %>%
+      invisible()
+    
+    file.copy(
+      from = file$datapath,
+      to = paste(this_dir, file$name, sep = "/"),
       overwrite = TRUE
     ) %>%
       invisible()
@@ -254,6 +301,9 @@ render_ind_page_shiny <- function(x,
       save = FALSE,
       file = "html"
     )
+    
+    name <- "custom_output.html"
+    
   }
 
   bookdown::render_book(
@@ -261,7 +311,7 @@ render_ind_page_shiny <- function(x,
     params = params_list, 
     output_format = bookdown::html_document2(),
     envir = new.env(parent = globalenv()),
-    output_file = "output.html",
+    output_file = name,
     output_dir = this_dir,
     intermediates_dir = this_dir,
     knit_root_dir = this_dir,
@@ -270,3 +320,20 @@ render_ind_page_shiny <- function(x,
   )
   
 }
+
+#' Clean `www` folder
+#'
+#' Clean `www` folder
+#'
+#' @export
+
+clean_www <- function(){
+  if("NEespShiny" %in% installed.packages()){
+    unlink(system.file("www", package = "NEespShiny"))
+    dir.create(paste(system.file(package = "NEespShiny"),
+                     "www", sep = "/"))
+  }
+}
+
+
+

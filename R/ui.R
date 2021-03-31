@@ -1,3 +1,11 @@
+#' User interface function
+#'
+#' User interface script code
+#' 
+#' @import shiny
+#'
+#' @export
+
 ui <- fluidPage(
   
   h1("Generate Northeast ESP Preliminary Reports"),
@@ -7,9 +15,11 @@ ui <- fluidPage(
     widths = c(2, 10),
     
     tabPanel(
-      "Explore Indicator Data",
+      "Explore Indicator Data (package bookdowns)",
       
-      h2("Choose species"),
+      h2("Explore Indicator Data (package bookdowns)"),
+      
+      h3("Choose species"),
       
       selectInput(
         inputId = "i_species",
@@ -17,27 +27,69 @@ ui <- fluidPage(
         choices = NEesp::species_key$Species
       ),
       
-      h2("Choose indicator"),
+      h3("Choose indicator"),
       
       selectInput(
         inputId = "indicator",
         label = "Indicator",
-        choices = list.files(here::here("indicator_bookdown_template-dev"),
-                             pattern = ".Rmd")
+        choices = list.files(system.file("indicator_bookdown_template", package = "NEesp"),
+                                                pattern = ".Rmd")
       ),
       
       actionButton("go", "click"),
       
-      htmlOutput('markdown')
+      htmlOutput("markdown")
       
     ),
+    
+    tabPanel(
+      "Explore Indicator Data (test your bookdowns)",
+      
+      h2("Explore Indicator Data (test your bookdowns)"),
+      
+      h3("Choose species"),
+      
+      selectInput(
+        inputId = "i_species2",
+        label = "Species",
+        choices = NEesp::species_key$Species
+      ),
+      
+      h3("Do you have R scripts that need to be sourced?"),
+      
+      fileInput(
+        inputId = "test_script",
+        label = "Choose scripts(s) to load",
+        multiple = TRUE,
+        accept = ".R",
+        placeholder = "No, I'm good"
+      ),
+      
+      h3("Choose indicator file(s)"),
+      p("Remember to include `index.Rmd` if needed!"),
+      
+      fileInput(
+        inputId = "test_file",
+        label = "Choose file(s) to test",
+        multiple = TRUE,
+        accept = ".Rmd"
+        ),
+        
+        actionButton("go2", "click"),
+        
+        htmlOutput("markdown2")
+        
+      ),
+      
 
     # indicator reports
     tabPanel(
       
-      "Indicator Reports",
+      "Download an Indicator Report",
       
-      h2("Report parameters"),
+      h2("Download an Indicator Report"),
+      
+      h3("Report parameters"),
       
       selectInput(
         inputId = "ind_species",
@@ -51,12 +103,14 @@ ui <- fluidPage(
     # regression reports
     tabPanel(
       
-      "Regression Reports",
+      "Download a Regression Report",
+      
+      h2("Download a Regression Report"),
       
       splitLayout(
 
         verticalLayout(
-          h2("Report parameters"),
+          h3("Report parameters"),
 
           selectInput(
             inputId = "species",
@@ -92,7 +146,7 @@ ui <- fluidPage(
         ),
 
         verticalLayout(
-          h2(HTML("Possible <br/> species - region - EPU <br/> combinations"),
+          h3(HTML("Possible <br/> species - region - EPU <br/> combinations"),
              align = "center"),
           DT::dataTableOutput("table",
             height = "100%"

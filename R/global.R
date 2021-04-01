@@ -12,8 +12,6 @@
 #' @param file_var The name of the zip file produced
 #'
 #' @importFrom magrittr %>%
-#'
-#' @export
 
 render_reg_report_shiny <- function(stock_var,
                                     epus_var = "MAB",
@@ -118,8 +116,6 @@ render_reg_report_shiny <- function(stock_var,
 #'
 #' @importFrom magrittr %>%
 #' @importFrom ggplot2 .pt
-#'
-#' @export
 
 render_ind_report_shiny <- function(x,
                                     save_data = TRUE,
@@ -174,8 +170,6 @@ render_ind_report_shiny <- function(x,
     )
   }
 
-  setwd(this_dir)
-
   bookdown::render_book(
     input = ".",
     params = params_list,
@@ -221,8 +215,6 @@ render_ind_report_shiny <- function(x,
 #'
 #' @importFrom magrittr %>%
 #' @importFrom ggplot2 .pt
-#'
-#' @export
 
 render_ind_page_shiny <- function(x,
                                   input,
@@ -302,8 +294,6 @@ render_ind_page_shiny <- function(x,
 #' Clean `www` folder
 #'
 #' Erases and re-creates the `www` folder in the NEespShiny library folder
-#'
-#' @export
 
 clean_www <- function() {
   if ("NEespShiny" %in% installed.packages()) {

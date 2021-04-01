@@ -7,8 +7,6 @@
 #'
 #' @import shiny
 #' @importFrom magrittr %>%
-#'
-#' @export
 
 server <- function(input, output) {
 

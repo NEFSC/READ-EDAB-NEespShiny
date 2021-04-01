@@ -1,16 +1,16 @@
 
 #' Render shiny regression report
 #'
-#' Render shiny regression report
+#' Render shiny regression report. Bookdown files are copied into the working directory and the report is generated in the working directory. Suggest to change to a temp directory before running.
 #'
-#' @param stock_var 
-#' @param epus_var 
+#' @param stock_var
+#' @param epus_var
 #' @param region_var
 #' @param remove_var
 #' @param lag_var
 #' @param save_var
 #' @param file_var
-#' 
+#'
 #' @importFrom magrittr %>%
 #'
 #' @export
@@ -21,48 +21,45 @@ render_reg_report_shiny <- function(stock_var,
                                     remove_var = FALSE,
                                     lag_var = 0,
                                     save_var = TRUE,
-                                    this_dir,
                                     file_var) {
-  #new_dir <- tempdir()
-  
-  #setwd(new_dir)
-  #this_dir <- paste(new_dir, "BOOK", sep = "/")
-  #dir.create(this_dir)
-  #setwd("BOOK")
 
   # make sure directory is clean
+
+  this_dir <- getwd()
+
   existing_files <- list.files(
     this_dir,
     full.names = TRUE,
     recursive = TRUE,
     all.files = TRUE
   )
-  
+
   if (length(existing_files) > 0) {
     file.remove(existing_files)
   }
-  
+
   file.copy(
     from = list.files(system.file("correlation_bookdown_template", package = "NEesp"),
-                      pattern = ".Rmd",
-                      full.names = TRUE
+      pattern = ".Rmd",
+      full.names = TRUE
     ),
     to = this_dir,
     overwrite = TRUE
   ) %>%
     invisible()
-  
+
   if (save_var) {
     dir.create("data",
-               recursive = TRUE
+      recursive = TRUE
     )
   }
-  
+
   # bookdown needs the files in the working directory... can't find a way around it
   # changing `input = ` doesn't work
   # putting full file path to temp files in yml doesn't work
-  setwd(this_dir)
-  
+  # setwd(this_dir)
+  # working directory is set to this_dir before running this function
+
   # render bookdown
   bookdown::render_book(
     input = ".",
@@ -85,9 +82,8 @@ render_reg_report_shiny <- function(stock_var,
     clean = TRUE,
     quiet = FALSE
   )
-  
+
   # zip files
-  #setwd(this_dir)
   files2zip <- c(
     list.files(
       full.names = TRUE,
@@ -105,77 +101,70 @@ render_reg_report_shiny <- function(stock_var,
       pattern = ".csv"
     )
   )
-  
-  utils::zip("testZip",
-             files = files2zip)
 
+  utils::zip("testZip",
+    files = files2zip
+  )
 }
 
 #' Render shiny indicator report
 #'
-#' Render shiny indicator report
+#' Render shiny indicator report. Bookdown files are copied into the working directory and the report is generated in the working directory. Suggest to change to a temp directory before running.
 #'
-#' @param x 
-#' @param save_data 
+#' @param x
+#' @param save_data
 #' @param input
 #' @param file_var
-#' 
+#'
 #' @importFrom magrittr %>%
 #' @importFrom ggplot2 .pt
 #'
 #' @export
 
-render_ind_report_shiny <- function(x, 
-                                    save_data = TRUE, 
+render_ind_report_shiny <- function(x,
+                                    save_data = TRUE,
                                     input = "package",
                                     file_var) {
-
-  new_dir <- tempdir()
-  
-  setwd(new_dir)
-  dir.create("BOOK")
-  setwd("BOOK")
   this_dir <- getwd()
-  
+
   # make sure directory is clean
   existing_files <- list.files(
+    this_dir,
     full.names = TRUE,
     recursive = TRUE,
     all.files = TRUE
   )
-  
+
   if (length(existing_files) > 0) {
     file.remove(existing_files)
   }
-  
-  if(input == "package"){
+
+  if (input == "package") {
     file.copy(
       from = list.files(system.file("indicator_bookdown_template", package = "NEesp"),
-                        full.names = TRUE
+        full.names = TRUE
       ),
       to = this_dir,
       overwrite = TRUE
     ) %>%
       invisible()
-    
+
     params_list <- list(
       species_ID = x,
       path = paste(this_dir, "/figures//", sep = ""),
       ricky_survey_data = NEesp::bio_survey,
       save = save_data
     )
-    
   } else {
-
     file.copy(
       from = list.files(input,
-                        full.names = TRUE
+        full.names = TRUE
       ),
       to = this_dir,
       overwrite = TRUE
     ) %>%
       invisible()
-    
+
     params_list <- list(
       species_ID = x,
       path = paste(this_dir, "/figures//", sep = ""),
@@ -184,50 +173,52 @@ render_ind_report_shiny <- function(x,
       file = "word"
     )
   }
-  
-    bookdown::render_book(
-      input = ".",
-      params = params_list, 
-      output_format = bookdown::word_document2(),
-      envir = new.env(parent = globalenv()),
-      output_file = file_var,
-      output_dir = this_dir,
-      intermediates_dir = this_dir,
-      knit_root_dir = this_dir,
-      clean = TRUE,
-      quiet = FALSE
+
+  setwd(this_dir)
+
+  bookdown::render_book(
+    input = ".",
+    params = params_list,
+    output_format = bookdown::word_document2(),
+    envir = new.env(parent = globalenv()),
+    output_file = file_var,
+    output_dir = this_dir,
+    intermediates_dir = this_dir,
+    knit_root_dir = this_dir,
+    clean = TRUE,
+    quiet = FALSE
+  )
+
+  # zip files
+  files2zip <- c(
+    list.files(
+      full.names = TRUE,
+      recursive = TRUE,
+      pattern = "report.doc"
+    ),
+    list.files(
+      full.names = TRUE,
+      recursive = TRUE,
+      pattern = ".png"
+    ),
+    list.files(
+      full.names = TRUE,
+      recursive = TRUE,
+      pattern = ".csv"
     )
-    
-    # zip files
-    files2zip <- c(
-      list.files(
-        full.names = TRUE,
-        recursive = TRUE,
-        pattern = "report.doc"
-      ),
-      list.files(
-        full.names = TRUE,
-        recursive = TRUE,
-        pattern = ".png"
-      ),
-      list.files(
-        full.names = TRUE,
-        recursive = TRUE,
-        pattern = ".csv"
-      )
-    )
-    
-    utils::zip(zipfile = "testZip", files = files2zip)
+  )
+
+  utils::zip(zipfile = "testZip", files = files2zip)
 }
 
 #' Render shiny indicator page
 #'
-#' Render shiny indicator page
+#' Render shiny indicator page. Bookdown files are copied into the working directory and the report is generated in the working directory. Suggest to change to a temp directory before running.
 #'
-#' @param x 
+#' @param x
 #' @param input
 #' @param file_var
-#' 
+#'
 #' @importFrom magrittr %>%
 #' @importFrom ggplot2 .pt
 #'
@@ -236,30 +227,20 @@ render_ind_report_shiny <- function(x,
 render_ind_page_shiny <- function(x,
                                   input,
                                   file) {
-  
-  start_dir <- getwd()
-  on.exit(setwd(start_dir), add = TRUE)
-  
-  new_dir <- tempdir()
-  setwd(new_dir)
-  
-  dir.create("BOOK")
-  setwd("BOOK")
-  
   this_dir <- getwd()
-  
+
   # make sure directory is clean
   existing_files <- list.files(
     full.names = TRUE,
     recursive = TRUE,
     all.files = TRUE
   )
-  
+
   if (length(existing_files) > 0) {
     file.remove(existing_files)
   }
-  
-  if(input == "package"){
+
+  if (input == "package") {
     prefix <- system.file("indicator_bookdown_template", package = "NEesp")
     file.copy(
       from = paste(prefix, c("index.Rmd", file), sep = "/"),
@@ -267,18 +248,17 @@ render_ind_page_shiny <- function(x,
       overwrite = TRUE
     ) %>%
       invisible()
-    
+
     params_list <- list(
       species_ID = x,
       path = here::here("www//"),
       ricky_survey_data = NEesp::bio_survey,
       save = FALSE
     )
-    
+
     name <- "package_output.html"
-    
   } else {
-    
+
     # copy index file, will be overwritten if user uploads one
     file.copy(
       from = system.file("indicator_bookdown_template/index.Rmd", package = "NEesp"),
@@ -286,14 +266,14 @@ render_ind_page_shiny <- function(x,
       overwrite = TRUE
     ) %>%
       invisible()
-    
+
     file.copy(
       from = file$datapath,
       to = paste(this_dir, file$name, sep = "/"),
       overwrite = TRUE
     ) %>%
       invisible()
-    
+
     params_list <- list(
       species_ID = x,
       path = here::here("www//"),
@@ -301,14 +281,13 @@ render_ind_page_shiny <- function(x,
       save = FALSE,
       file = "html"
     )
-    
+
     name <- "custom_output.html"
-    
   }
 
   bookdown::render_book(
     input = ".",
-    params = params_list, 
+    params = params_list,
     output_format = bookdown::html_document2(),
     envir = new.env(parent = globalenv()),
     output_file = name,
@@ -318,7 +297,6 @@ render_ind_page_shiny <- function(x,
     clean = TRUE,
     quiet = FALSE
   )
-  
 }
 
 #' Clean `www` folder
@@ -327,13 +305,12 @@ render_ind_page_shiny <- function(x,
 #'
 #' @export
 
-clean_www <- function(){
-  if("NEespShiny" %in% installed.packages()){
+clean_www <- function() {
+  if ("NEespShiny" %in% installed.packages()) {
     unlink(system.file("www", package = "NEespShiny"))
     dir.create(paste(system.file(package = "NEespShiny"),
-                     "www", sep = "/"))
+      "www",
+      sep = "/"
+    ))
   }
 }
-
-
-

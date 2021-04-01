@@ -7,8 +7,7 @@ Authors@R: person("Abigail", "Tyrell", email = "abigail.tyrell@noaa.gov",
   role = c("aut", "cre"))
 Depends:
     shiny,
-    NEesp,
-    R (>= 2.10)
+    NEesp
 Remotes:
     NOAA-EDAB/esp_data_aggregation@package
 Encoding: UTF-8

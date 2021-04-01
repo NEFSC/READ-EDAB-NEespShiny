@@ -221,7 +221,7 @@ render_ind_page_shiny <- function(x,
                                   file) {
   this_dir <- getwd()
   
-  # create image directory
+  # create image directory (www)
   img_dir <- paste(system.file(package = "NEespShiny"),
                    "www//",
                    sep = "/"
@@ -300,14 +300,11 @@ render_ind_page_shiny <- function(x,
 
 #' Clean `www` folder
 #'
-#' Erases and re-creates the `www` folder in the NEespShiny library folder
+#' Erases the `www` folder in the NEespShiny library folder at the end of the session
 
 clean_www <- function() {
   if ("NEespShiny" %in% installed.packages()) {
-    unlink(system.file("www", package = "NEespShiny"))
-    dir.create(paste(system.file(package = "NEespShiny"),
-      "www",
-      sep = "/"
-    ))
+    unlink(system.file("www", package = "NEespShiny",
+                       recursive = TRUE))
   }
 }

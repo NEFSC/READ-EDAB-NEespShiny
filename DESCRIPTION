@@ -6,7 +6,8 @@ License: file LICENSE
 Authors@R: person("Abigail", "Tyrell", email = "abigail.tyrell@noaa.gov",
   role = c("aut", "cre"))
 Depends:
-    shiny,
+    shiny
+Imports:
     NEesp
 Remotes:
     NOAA-EDAB/esp_data_aggregation@package

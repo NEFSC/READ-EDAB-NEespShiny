@@ -3,7 +3,6 @@
 #'
 #' Runs the app. No input required, leave blank.
 #'
-#' @importFrom magrittr %>%
 #' @export
 
 run_NEesp <- function() {

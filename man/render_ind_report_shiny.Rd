@@ -7,12 +7,14 @@
 render_ind_report_shiny(x, save_data = TRUE, input = "package", file_var)
 }
 \arguments{
-\item{x}{}
+\item{x}{Species common name}
 
-\item{save_data}{}
+\item{save_data}{Whether or not to save the data files as .csv}
 
-\item{file_var}{}
+\item{input}{The folder to copy the report template files from. Defaults to "package", which copies the template files from the NEesp package.}
+
+\item{file_var}{The name of the zip file produced}
 }
 \description{
-Render shiny indicator report
+Render shiny indicator report. Bookdown files are copied into the working directory and the report is generated in the working directory. Suggest to change to a temp directory before running.
 }

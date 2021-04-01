@@ -3,13 +3,13 @@
 #'
 #' Render shiny regression report. Bookdown files are copied into the working directory and the report is generated in the working directory. Suggest to change to a temp directory before running.
 #'
-#' @param stock_var
-#' @param epus_var
-#' @param region_var
-#' @param remove_var
-#' @param lag_var
-#' @param save_var
-#' @param file_var
+#' @param stock_var Species common name
+#' @param epus_var EPU to use
+#' @param region_var Stock region
+#' @param remove_var Whether or not to remove the past 10 years of data
+#' @param lag_var How many years to lag the correlation by
+#' @param save_var Whether or not to save the data files as .csv
+#' @param file_var The name of the zip file produced
 #'
 #' @importFrom magrittr %>%
 #'
@@ -111,10 +111,10 @@ render_reg_report_shiny <- function(stock_var,
 #'
 #' Render shiny indicator report. Bookdown files are copied into the working directory and the report is generated in the working directory. Suggest to change to a temp directory before running.
 #'
-#' @param x
-#' @param save_data
-#' @param input
-#' @param file_var
+#' @param x Species common name
+#' @param save_data Whether or not to save the data files as .csv
+#' @param input The folder to copy the report template files from. Defaults to "package", which copies the template files from the NEesp package.
+#' @param file_var The name of the zip file produced
 #'
 #' @importFrom magrittr %>%
 #' @importFrom ggplot2 .pt
@@ -215,9 +215,9 @@ render_ind_report_shiny <- function(x,
 #'
 #' Render shiny indicator page. Bookdown files are copied into the working directory and the report is generated in the working directory. Suggest to change to a temp directory before running.
 #'
-#' @param x
-#' @param input
-#' @param file_var
+#' @param x Species common name
+#' @param input The folder to copy the report template files from. Defaults to "package", which copies the template files from the NEesp package.
+#' @param file The name of the .Rmd file to render (if taking from the package template), or the uploaded .Rmd files
 #'
 #' @importFrom magrittr %>%
 #' @importFrom ggplot2 .pt
@@ -301,7 +301,7 @@ render_ind_page_shiny <- function(x,
 
 #' Clean `www` folder
 #'
-#' Clean `www` folder
+#' Erases and re-creates the `www` folder in the NEespShiny library folder
 #'
 #' @export
 

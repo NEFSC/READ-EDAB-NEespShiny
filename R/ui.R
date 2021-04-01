@@ -3,6 +3,7 @@
 #' User interface script code
 #'
 #' @import shiny
+#' @importFrom magrittr %>%
 #'
 #' @export
 
@@ -33,7 +34,9 @@ ui <- fluidPage(
         label = "Indicator",
         choices = list.files(system.file("indicator_bookdown_template", package = "NEesp"),
           pattern = ".Rmd"
-        )
+        ) %>%
+          stringr::str_subset("child-doc.Rmd", negate = TRUE) %>%
+          stringr::str_subset("index.Rmd", negate = TRUE)
       ),
 
       actionButton("go", "click"),
@@ -56,6 +59,7 @@ ui <- fluidPage(
       ),
 
       h3("Do you have R scripts that need to be sourced?"),
+      h4("Warning: Scripts will be sourced before rendering the report; using `source` within the report is not supported."),
 
       fileInput(
         inputId = "test_script",
@@ -66,8 +70,8 @@ ui <- fluidPage(
       ),
 
       h3("Choose indicator file(s)"),
-      p("Remember to include `index.Rmd`!"),
-      p("Check yourself: Are you editing a child doc? Are you sure you're sourcing the local version?"),
+      h4("Remember to include `index.Rmd`!"),
+      h4("Check yourself: Are you editing a child doc? Are you sure you're sourcing the local version in the rest of your code?"),
 
       fileInput(
         inputId = "test_file",
@@ -96,17 +100,18 @@ ui <- fluidPage(
         choices = NEesp::species_key$Species
       ),
       
-      h4("Do you want to use a local template?"),
+      h3("Do you want to use a local template?"),
+      h4("Warning: Only upload one .yml!"),
       fileInput(
         inputId = "test_template",
-        label = "If so, upload all .Rmds and your .yml",
+        label = "Upload all .Rmds and your .yml",
         multiple = TRUE,
         accept = c(".Rmd", ".yml"),
         placeholder = "Just use the package template!"
       ),
       
-      h4("Does your local template need to source R scripts?"),
-      
+      h3("Does your local template depend on sourced R scripts?"),
+      h4("Warning: Scripts will be sourced before rendering the report; using `source` within the report is not supported."),
       fileInput(
         inputId = "test_tem_script",
         label = "Choose scripts(s) to load",

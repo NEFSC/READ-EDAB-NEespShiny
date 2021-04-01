@@ -11,17 +11,24 @@ render_reg_report_shiny(
   remove_var = FALSE,
   lag_var = 0,
   save_var = TRUE,
-  this_dir,
   file_var
 )
 }
 \arguments{
-\item{stock_var}{}
+\item{stock_var}{Species common name}
 
-\item{epus_var}{}
+\item{epus_var}{EPU to use}
 
-\item{file_var}{}
+\item{region_var}{Stock region}
+
+\item{remove_var}{Whether or not to remove the past 10 years of data}
+
+\item{lag_var}{How many years to lag the correlation by}
+
+\item{save_var}{Whether or not to save the data files as .csv}
+
+\item{file_var}{The name of the zip file produced}
 }
 \description{
-Render shiny regression report
+Render shiny regression report. Bookdown files are copied into the working directory and the report is generated in the working directory. Suggest to change to a temp directory before running.
 }

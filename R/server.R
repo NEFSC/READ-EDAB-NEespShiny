@@ -2,8 +2,8 @@
 #'
 #' Server script code
 #'
-#' @param input input for app
-#' @param output output for app
+#' @param input Input for app
+#' @param output Output for app
 #'
 #' @import shiny
 #' @importFrom magrittr %>%
@@ -146,6 +146,19 @@ server <- function(input, output) {
             temp <- paste(tempdir(), "local_template", sep = "/")
             dir.create(temp)
             
+            # make sure directory is clean
+            existing_files <- list.files(
+              temp,
+              full.names = TRUE,
+              recursive = TRUE,
+              all.files = TRUE
+            )
+            
+            if (length(existing_files) > 0) {
+              file.remove(existing_files)
+            }
+            
+            # copy files
             file.copy(
               from = input$test_template$datapath,
               
@@ -155,8 +168,11 @@ server <- function(input, output) {
               invisible()
             
             # rename .yml as `_bookdown.yml`
-            yml <- list.files(pattern = ".yml")
-            file.rename(yml, "_bookdown.yml")
+            yml <- list.files(temp, 
+                              pattern = ".yml",
+                              full.names = TRUE)
+            file.rename(from = yml, 
+                        to = paste(temp, "_bookdown.yml", sep = "/"))
             
             render_ind_report_shiny(
               x = input$ind_species,

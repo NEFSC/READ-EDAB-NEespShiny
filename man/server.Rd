@@ -7,9 +7,9 @@
 server(input, output)
 }
 \arguments{
-\item{input}{input for app}
+\item{input}{Input for app}
 
-\item{output}{output for app}
+\item{output}{Output for app}
 }
 \description{
 Server script code

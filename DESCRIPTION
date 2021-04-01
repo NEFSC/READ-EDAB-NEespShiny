@@ -5,7 +5,7 @@ Description: Generates preliminary Ecosystem and Socioeconomic Profiles for Nort
 License: file LICENSE
 Authors@R: person("Abigail", "Tyrell", email = "abigail.tyrell@noaa.gov",
   role = c("aut", "cre"))
-Imports:
+Depends:
     shiny,
     NEesp
 Remotes:

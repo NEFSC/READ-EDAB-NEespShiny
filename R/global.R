@@ -220,6 +220,13 @@ render_ind_page_shiny <- function(x,
                                   input,
                                   file) {
   this_dir <- getwd()
+  
+  # create image directory
+  img_dir <- paste(system.file(package = "NEespShiny"),
+                   "www//",
+                   sep = "/"
+  )
+  dir.create(img_dir)
 
   # make sure directory is clean
   existing_files <- list.files(
@@ -243,7 +250,7 @@ render_ind_page_shiny <- function(x,
 
     params_list <- list(
       species_ID = x,
-      path = here::here("www//"),
+      path = img_dir,
       ricky_survey_data = NEesp::bio_survey,
       save = FALSE
     )
@@ -268,7 +275,7 @@ render_ind_page_shiny <- function(x,
 
     params_list <- list(
       species_ID = x,
-      path = here::here("www//"),
+      path = img_dir,
       ricky_survey_data = NEesp::bio_survey,
       save = FALSE,
       file = "html"

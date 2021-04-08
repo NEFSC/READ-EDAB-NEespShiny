@@ -38,8 +38,16 @@ ui <- fluidPage(
       ),
 
       actionButton("go", "click"),
-
-      htmlOutput("markdown")
+      
+      htmlOutput("markdown")#,
+      
+      #tags$div(
+      #HTML(readLines(here::here("www", "package_output.html")))
+      #)
+      
+     # htmltools::tags$iframe(src = here::here("www", 'package_output.html'), 
+    #                         width = '100%', height = '100vh')
+      
     ),
 
     # indicators rendered from local files
@@ -179,3 +187,4 @@ ui <- fluidPage(
     )
   )
 )
+

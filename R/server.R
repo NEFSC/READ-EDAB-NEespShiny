@@ -11,6 +11,11 @@
 server <- function(input, output) {
 
   # indicator page from package ----
+  
+  #pre_re <- eventReactive(
+  #  input$go,
+  #  return()
+  #)
 
   re <- eventReactive(
     input$go,
@@ -42,13 +47,22 @@ server <- function(input, output) {
       )
 
       # show report
+
       includeHTML(paste(this_dir, "package_output.html", sep = "/"))
+      #includeHTML(here::here("www", "package_output.html"))
+      #HTML(readLines(paste(this_dir, "package_output.html", sep = "/")))
+
+    #  if (is.null(input$i_species) |
+    #      is.null(input$indicator)){
+    #        return()
+    #      }
     }
-  )
+    )
 
   output$markdown <- renderUI({
+  #  pre_re()
     re()
-  })
+  }  )
 
   # indicator page from test bookdowns ----
 

@@ -219,6 +219,9 @@ render_ind_report_shiny <- function(x,
 render_ind_page_shiny <- function(x,
                                   input,
                                   file) {
+  
+ # DT::JS("destroy();")
+
   this_dir <- getwd()
   
   # create image directory (www)
@@ -296,6 +299,7 @@ render_ind_page_shiny <- function(x,
     clean = TRUE,
     quiet = FALSE
   )
+
 }
 
 #' Clean `www` folder

@@ -18,5 +18,6 @@ Latitude and longitude ranges were calculated from NOAA/EDAB ECSA [seasonal spec
 data <- NEesp::get_latlong(species, latlong_data, shapefile = NEesp::shape) %>%
   NEesp::character_to_factor()
 
-NEesp::make_html_table(data, col_names = colnames(data))
+NEesp::make_html_table(data, col_names = colnames(data)) %>%
+  DT::renderDataTable(outputArgs = list(height = "100%"))
 ```

@@ -10,6 +10,7 @@ output:
 documentclass: book
 always_allow_html: true
 github-repo: NOAA-EDAB/esp_data_aggregation
+runtime: shiny
 
 language:
   ui:

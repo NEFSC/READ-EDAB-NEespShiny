@@ -8,6 +8,7 @@
 run_NEesp <- function() {
   shiny::shinyApp(ui,
     server,
+    #options = list(shiny.trace = TRUE),
     onStart = function() {
       start_dir <- getwd()
 

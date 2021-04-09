@@ -8,19 +8,13 @@
 #' @import shiny
 #' @importFrom magrittr %>%
 
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   # indicator page from package ----
-  
-  #pre_re <- eventReactive(
-  #  input$go,
-  #  return()
-  #)
 
   re <- eventReactive(
     input$go,
     {
-
       # rendering message
       id <- showNotification(
         "Rendering report...",
@@ -28,9 +22,9 @@ server <- function(input, output) {
         closeButton = FALSE,
         type = "message"
       )
-
+      
       on.exit(removeNotification(id), add = TRUE)
-
+      
       # create temp dir
       this_dir <- paste(tempdir(), "BOOK", sep = "/")
       dir.create(this_dir)
@@ -38,38 +32,81 @@ server <- function(input, output) {
       # bookdown needs it
       # downloading zip file needs it (only sometimes???)
       setwd(this_dir)
-
+      
       # render report
       render_ind_page_shiny(
         x = input$i_species,
         input = "package",
         file = input$indicator
       )
-
+      
       # show report
-
-      includeHTML(paste(this_dir, "package_output.html", sep = "/"))
-      #includeHTML(here::here("www", "package_output.html"))
-      #HTML(readLines(paste(this_dir, "package_output.html", sep = "/")))
-
-    #  if (is.null(input$i_species) |
-    #      is.null(input$indicator)){
-    #        return()
-    #      }
+      
+      #includeHTML(paste(this_dir, "package_output.html", sep = "/"))
+      path <- paste(this_dir, "package_output.html", sep = "/")
+      return(path)
     }
-    )
+  )
+  
+#  observeEvent(input$go, {
+#    removeUI("#markdown",
+#             immediate = TRUE)
+#    print("removed")
+#  },
+#  priority = 3)
+  
+#  observeEvent(input$go, {
+#    insertUI("#go", "afterEnd", 
+#             ui = tags$div(id = "markdown", HTML()),
+#             immediate = TRUE)
+#    print("added")
+#  }, priority = 2)
 
-  output$markdown <- renderUI({
-  #  pre_re()
-    re()
-  }  )
+ observeEvent(input$go, {
+  
+#   htmlwidgets::JS("$('#markdown').DataTable().destroy();") # not sure why this doesn't work
+   
+    # rendering message
+    id <- showNotification(
+      "Rendering report...",
+      duration = NULL,
+      closeButton = FALSE,
+      type = "message"
+    )
+    
+    on.exit(removeNotification(id), add = TRUE)
+    
+    # create temp dir
+    this_dir <- paste(tempdir(), "BOOK", sep = "/")
+    dir.create(this_dir)
+    # can't find a way around this
+    # bookdown needs it
+    # downloading zip file needs it (only sometimes???)
+    setwd(this_dir)
+    
+    # render report
+    render_ind_page_shiny(
+      x = input$i_species,
+      input = "package",
+      file = input$indicator
+    )
+    
+    # show report
+   
+    output$markdown <- renderUI(includeHTML(paste(this_dir, "package_output.html", sep = "/")))
+    
+#    print("rendered")
+
+  },
+  priority = 1)
+  
 
   # indicator page from test bookdowns ----
-
+  
   re2 <- eventReactive(
     input$go2,
     {
-
+      
       # rendering message
       id <- showNotification(
         "Rendering report...",
@@ -77,15 +114,15 @@ server <- function(input, output) {
         closeButton = FALSE,
         type = "message"
       )
-
+      
       on.exit(removeNotification(id), add = TRUE)
-
+      
       # source R scripts if necessary
       if (class(input$test_script) == "data.frame") {
         lapply(input$test_script$datapath,
                source)
       }
-
+      
       # create temp dir
       this_dir <- paste(tempdir(), "BOOK", sep = "/")
       dir.create(this_dir)
@@ -93,34 +130,34 @@ server <- function(input, output) {
       # bookdown needs it
       # downloading zip file needs it (only sometimes???)
       setwd(this_dir)
-
+      
       # render report
       render_ind_page_shiny(
         x = input$i_species2,
         input = "custom",
         file = input$test_file
       )
-
+      
       # show report
       includeHTML(paste(this_dir, "custom_output.html", sep = "/"))
     }
   )
-
+  
   output$markdown2 <- renderUI({
     re2()
   })
-
+  
   # indicator report ----
   output$ind_report <- downloadHandler(
-
+    
     # create file name
     filename = function() {
       paste(input$ind_species, "_indicator_report.zip", sep = "")
     },
-
+    
     # create file content
     content = function(file) {
-
+      
       # rendering message
       id <- showNotification(
         "Rendering report...",
@@ -128,15 +165,15 @@ server <- function(input, output) {
         closeButton = FALSE,
         type = "message"
       )
-
+      
       on.exit(removeNotification(id), add = TRUE)
-
+      
       withProgress(
         message = "This may take a few minutes",
         value = 0,
         {
           setProgress(0.05)
-
+          
           # create temp dir
           this_dir <- paste(tempdir(), "BOOK", sep = "/")
           dir.create(this_dir)
@@ -198,31 +235,31 @@ server <- function(input, output) {
               file_var = paste(input$ind_species, "_indicator_report.docx", sep = "")
             )
           }
-
+          
           setProgress(0.9)
-
+          
           # copy zip file for download
           file.copy("testZip.zip", file)
-
+          
           setProgress(1)
         }
       )
     },
-
+    
     contentType = "application/zip"
   )
-
+  
   # regression report ----
   output$report <- downloadHandler(
-
+    
     # create file name
     filename = function() {
       paste(input$species, "_regression_report.zip", sep = "")
     },
-
+    
     # create file content
     content = function(file) {
-
+      
       # rendering message
       id <- showNotification(
         "Rendering report...",
@@ -231,7 +268,7 @@ server <- function(input, output) {
         type = "message"
       )
       on.exit(removeNotification(id), add = TRUE)
-
+      
       # create temp dir
       this_dir <- paste(tempdir(), "BOOK", sep = "/")
       dir.create(this_dir)
@@ -239,7 +276,7 @@ server <- function(input, output) {
       # bookdown needs it
       # downloading zip file needs it (only sometimes???)
       setwd(this_dir)
-
+      
       # render report
       render_reg_report_shiny(
         stock_var = input$species,
@@ -250,7 +287,7 @@ server <- function(input, output) {
         file_var = paste(input$species, "_regression_report.docx", sep = ""),
         save_var = TRUE
       )
-
+      
       # copy to zip file for download
       file.copy(
         from = "testZip.zip",
@@ -259,7 +296,7 @@ server <- function(input, output) {
     },
     contentType = "application/zip"
   )
-
+  
   # regression options table
   output$table <- DT::renderDataTable(NEesp::make_html_table_thin(
     NEesp::regression_species_regions,

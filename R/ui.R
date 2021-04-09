@@ -6,6 +6,13 @@
 #' @importFrom magrittr %>%
 
 ui <- fluidPage(
+  
+#  useShinyjs()
+  
+#  htmlwidgets::JS("$.ajaxSetup({
+#                          cache:false
+#                        });"),
+  
   h1("Generate Northeast ESP Preliminary Reports"),
 
   navlistPanel(

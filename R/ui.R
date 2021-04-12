@@ -6,13 +6,7 @@
 #' @importFrom magrittr %>%
 
 ui <- fluidPage(
-  
-#  useShinyjs()
-  
-#  htmlwidgets::JS("$.ajaxSetup({
-#                          cache:false
-#                        });"),
-  
+
   h1("Generate Northeast ESP Preliminary Reports"),
 
   navlistPanel(
@@ -46,14 +40,7 @@ ui <- fluidPage(
 
       actionButton("go", "click"),
       
-      htmlOutput("markdown")#,
-      
-      #tags$div(
-      #HTML(readLines(here::here("www", "package_output.html")))
-      #)
-      
-     # htmltools::tags$iframe(src = here::here("www", 'package_output.html'), 
-    #                         width = '100%', height = '100vh')
+      htmlOutput("markdown")
       
     ),
 

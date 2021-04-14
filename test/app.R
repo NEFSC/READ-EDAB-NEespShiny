@@ -3,17 +3,19 @@ library(shiny)
 ui <- shiny::fluidPage(
   h1("hello world"),
   actionButton("go", "click"),
+
+  htmlOutput("test"),
   
-  DT::DTOutput("table")
+  textOutput("text")
 )
 
 server <- function(input, output) {
   observeEvent(input$go,
   {
-    output$table <- DT::renderDT({
-                                 tibble::tibble("letters" = c("a", "b", "c"),
-                                            "numbers" = 1:3)
-                               })
+    file <- "widget.html"
+    output$test <- renderUI(htmltools::HTML(readLines(file)),
+                            env = .GlobalEnv)
+    output$text <- renderText(readLines(file)) # make sure file exists/isn't empty
     })
 }
 

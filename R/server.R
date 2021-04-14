@@ -8,7 +8,7 @@
 #' @import shiny
 #' @importFrom magrittr %>%
 
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   # indicator page from package ----
  
@@ -25,13 +25,16 @@ server <- function(input, output) {
   # running javascript with htmlwidgets::JS() does not do anything (are there typos??)
   # removing r objects with rm() does not do anything
   
- observeEvent(input$go, 
+  
+  
+ o <- observeEvent(input$go, 
             {
 
-              htmlwidgets::JS("$('#markdown').DataTable().table.destroy(true);
-                              $('#markdown'.empty()")
+              #htmlwidgets::JS("$('#markdown').DataTable().table.destroy(true);
+               #               $('#markdown'.empty()")
               
-        
+       # o$destroy(TRUE)
+      #  o$empty(TRUE)
     # rendering message
     id <- showNotification(
       "Rendering report...",
@@ -59,9 +62,18 @@ server <- function(input, output) {
     
     # show report
    
-    output$markdown <- renderUI(includeHTML(paste(this_dir, "package_output.html", sep = "/")))
+    output$markdown <- renderUI({
+      tags$iframe(srcdoc = htmltools::HTML(readLines(paste(this_dir, "package_output.html", sep = "/"))),
+                  width = "100%",
+                  height = "800px")
+     # tagList(includeHTML(paste(this_dir, "package_output.html", sep = "/"))))
+    #output$markdown <- htmlwidgets::shinyRenderWidget(includeHTML(paste(this_dir, "package_output.html", sep = "/")),
+    #                                                  outputFunction = renderUI,
+    #                                                  quoted = FALSE,
+    #                                                  env = .GlobalEnv)
 
   })
+            })
 
   # indicator page from test bookdowns ----
   

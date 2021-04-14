@@ -42,6 +42,12 @@ ui <- fluidPage(
       
       htmlOutput("markdown")
       
+      #htmlwidgets::shinyWidgetOutput("markdown",
+      #                               name = "datatable",
+      #                               package = "DT",
+      #                               width = "100%",
+      #                               height = "100%")
+      
     ),
 
     # indicators rendered from local files

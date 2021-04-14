@@ -28,6 +28,10 @@ server <- function(input, output) {
  observeEvent(input$go, 
             {
 
+              htmlwidgets::JS("$('#markdown').DataTable().table.destroy(true);
+                              $('#markdown'.empty()")
+              
+        
     # rendering message
     id <- showNotification(
       "Rendering report...",

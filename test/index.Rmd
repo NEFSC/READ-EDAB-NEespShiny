@@ -52,7 +52,8 @@ tab2 <- function (x, col_names = colnames(x), type = "html")
         if (nrow(x) > 0) {
             if (type == "html") {
                 output <- DT::datatable(x, 
-                                        class = "datatables html-widget html-widget-static-bound",
+                                        class = "datatables html-widget html-widget-output shiny-bound-output",
+                                        #aria-live = "polite",
                                         width = "100%",
                                         height = "100%",
                                         escape = FALSE,

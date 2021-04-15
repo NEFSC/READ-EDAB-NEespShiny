@@ -72,7 +72,7 @@ render_reg_report_shiny <- function(stock_var,
       out = "word"
     ),
     output_format = bookdown::word_document2(),
-    #envir = new.env(parent = globalenv()),
+    # envir = new.env(parent = globalenv()),
     output_file = file_var,
     output_dir = this_dir,
     intermediates_dir = this_dir,
@@ -174,7 +174,7 @@ render_ind_report_shiny <- function(x,
     input = ".",
     params = params_list,
     output_format = bookdown::word_document2(),
-    #envir = new.env(parent = globalenv()),
+    # envir = new.env(parent = globalenv()),
     output_file = file_var,
     output_dir = this_dir,
     intermediates_dir = this_dir,
@@ -219,15 +219,15 @@ render_ind_report_shiny <- function(x,
 render_ind_page_shiny <- function(x,
                                   input,
                                   file) {
-  
- # DT::JS("destroy();")
+
+  # DT::JS("destroy();")
 
   this_dir <- getwd()
-  
+
   # create image directory (www)
   img_dir <- paste(system.file(package = "NEespShiny"),
-                   "www//",
-                   sep = "/"
+    "www//",
+    sep = "/"
   )
   dir.create(img_dir)
 
@@ -291,7 +291,7 @@ render_ind_page_shiny <- function(x,
     input = ".",
     params = params_list,
     output_format = bookdown::html_document2(),
-    #envir = new.env(parent = globalenv()),
+    # envir = new.env(parent = globalenv()),
     output_file = name,
     output_dir = this_dir,
     intermediates_dir = this_dir,
@@ -299,7 +299,6 @@ render_ind_page_shiny <- function(x,
     clean = TRUE,
     quiet = FALSE
   )
-
 }
 
 #' Clean `www` folder
@@ -308,7 +307,9 @@ render_ind_page_shiny <- function(x,
 
 clean_www <- function() {
   if ("NEespShiny" %in% installed.packages()) {
-    unlink(system.file("www", package = "NEespShiny",
-                       recursive = TRUE))
+    unlink(system.file("www",
+      package = "NEespShiny",
+      recursive = TRUE
+    ))
   }
 }

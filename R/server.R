@@ -11,7 +11,7 @@
 server <- function(input, output, session) {
 
   # indicator page from package ----
- 
+
   # datatables do not render except on fist instance
   # can get the tables to render if you refresh the page before running a new indicator
   # could fix the datatables issue if the page could be auto-refreshed before displaying new page
@@ -24,17 +24,16 @@ server <- function(input, output, session) {
   # clearing temp files does not change anything
   # running javascript with htmlwidgets::JS() does not do anything (are there typos??)
   # removing r objects with rm() does not do anything
-  
-  
-  
- o <- observeEvent(input$go, 
-            {
 
-              #htmlwidgets::JS("$('#markdown').DataTable().table.destroy(true);
-               #               $('#markdown'.empty()")
-              
-       # o$destroy(TRUE)
-      #  o$empty(TRUE)
+
+
+  observeEvent(input$go, {
+
+    # htmlwidgets::JS("$('#markdown').DataTable().table.destroy(true);
+    #               $('#markdown'.empty()")
+
+    # o$destroy(TRUE)
+    #  o$empty(TRUE)
     # rendering message
     id <- showNotification(
       "Rendering report...",
@@ -42,9 +41,9 @@ server <- function(input, output, session) {
       closeButton = FALSE,
       type = "message"
     )
-    
+
     on.exit(removeNotification(id), add = TRUE)
-    
+
     # create temp dir
     this_dir <- paste(tempdir(), "BOOK", sep = "/")
     dir.create(this_dir)
@@ -52,35 +51,51 @@ server <- function(input, output, session) {
     # bookdown needs it
     # downloading zip file needs it (only sometimes???)
     setwd(this_dir)
-    
+
     # render report
     render_ind_page_shiny(
       x = input$i_species,
       input = "package",
       file = input$indicator
     )
-    
-    # show report
-   
-    output$markdown <- renderUI({
-      tags$iframe(srcdoc = htmltools::HTML(readLines(paste(this_dir, "package_output.html", sep = "/"))),
-                  width = "100%",
-                  height = "800px")
-     # tagList(includeHTML(paste(this_dir, "package_output.html", sep = "/"))))
-    #output$markdown <- htmlwidgets::shinyRenderWidget(includeHTML(paste(this_dir, "package_output.html", sep = "/")),
-    #                                                  outputFunction = renderUI,
-    #                                                  quoted = FALSE,
-    #                                                  env = .GlobalEnv)
 
+    # show report
+
+    # extract html between <body> </body> - suggested fix but doesn't work
+    
+    # html_body <- readLines(paste(this_dir, "package_output.html", sep = "/")) %>%
+    #  paste(collapse = " ") %>%
+    #  htmltools::HTML()
+
+    # html_body <- html_body %>%
+    #  stringr::str_split_fixed("<body>", n = 2)
+    # html_body <- html_body[,2]
+    # html_body <- html_body %>%
+    #  stringr::str_split_fixed("</body>", n = 2)
+    # html_body <- html_body[,1]
+
+    # output$markdown <- renderUI(htmltools::HTML(html_body))
+
+    output$markdown <- renderUI({
+      tags$iframe(
+        srcdoc = htmltools::HTML(readLines(paste(this_dir, "package_output.html", sep = "/"))),
+        width = "100%",
+        height = "800px"
+      )
+      # tagList(includeHTML(paste(this_dir, "package_output.html", sep = "/"))))
+      # output$markdown <- htmlwidgets::shinyRenderWidget(includeHTML(paste(this_dir, "package_output.html", sep = "/")),
+      #                                                  outputFunction = renderUI,
+      #                                                  quoted = FALSE,
+      #                                                  env = .GlobalEnv)
+    })
   })
-            })
 
   # indicator page from test bookdowns ----
-  
+
   re2 <- eventReactive(
     input$go2,
     {
-      
+
       # rendering message
       id <- showNotification(
         "Rendering report...",
@@ -88,15 +103,17 @@ server <- function(input, output, session) {
         closeButton = FALSE,
         type = "message"
       )
-      
+
       on.exit(removeNotification(id), add = TRUE)
-      
+
       # source R scripts if necessary
       if (class(input$test_script) == "data.frame") {
-        lapply(input$test_script$datapath,
-               source)
+        lapply(
+          input$test_script$datapath,
+          source
+        )
       }
-      
+
       # create temp dir
       this_dir <- paste(tempdir(), "BOOK", sep = "/")
       dir.create(this_dir)
@@ -104,34 +121,34 @@ server <- function(input, output, session) {
       # bookdown needs it
       # downloading zip file needs it (only sometimes???)
       setwd(this_dir)
-      
+
       # render report
       render_ind_page_shiny(
         x = input$i_species2,
         input = "custom",
         file = input$test_file
       )
-      
+
       # show report
       includeHTML(paste(this_dir, "custom_output.html", sep = "/"))
     }
   )
-  
+
   output$markdown2 <- renderUI({
     re2()
   })
-  
+
   # indicator report ----
   output$ind_report <- downloadHandler(
-    
+
     # create file name
     filename = function() {
       paste(input$ind_species, "_indicator_report.zip", sep = "")
     },
-    
+
     # create file content
     content = function(file) {
-      
+
       # rendering message
       id <- showNotification(
         "Rendering report...",
@@ -139,15 +156,15 @@ server <- function(input, output, session) {
         closeButton = FALSE,
         type = "message"
       )
-      
+
       on.exit(removeNotification(id), add = TRUE)
-      
+
       withProgress(
         message = "This may take a few minutes",
         value = 0,
         {
           setProgress(0.05)
-          
+
           # create temp dir
           this_dir <- paste(tempdir(), "BOOK", sep = "/")
           dir.create(this_dir)
@@ -155,20 +172,22 @@ server <- function(input, output, session) {
           # bookdown needs it
           # downloading zip file needs it (only sometimes???)
           setwd(this_dir)
-          
+
           # source R scripts if necessary
           if (class(input$test_tem_script) == "data.frame") {
-            lapply(input$test_tem_script$datapath,
-                   source)
+            lapply(
+              input$test_tem_script$datapath,
+              source
+            )
           }
-          
+
           # use uploaded template, if it exists
           if (class(input$test_template) == "data.frame") {
-            
+
             # don't copy to this_dir, will be erased in file cleaning during render_ind_report_shiny()
             temp <- paste(tempdir(), "local_template", sep = "/")
             dir.create(temp)
-            
+
             # make sure directory is clean
             existing_files <- list.files(
               temp,
@@ -176,27 +195,30 @@ server <- function(input, output, session) {
               recursive = TRUE,
               all.files = TRUE
             )
-            
+
             if (length(existing_files) > 0) {
               file.remove(existing_files)
             }
-            
+
             # copy files
             file.copy(
               from = input$test_template$datapath,
-              
+
               to = paste(temp, input$test_template$name, sep = "/"),
               overwrite = TRUE
             ) %>%
               invisible()
-            
+
             # rename .yml as `_bookdown.yml`
-            yml <- list.files(temp, 
-                              pattern = ".yml",
-                              full.names = TRUE)
-            file.rename(from = yml, 
-                        to = paste(temp, "_bookdown.yml", sep = "/"))
-            
+            yml <- list.files(temp,
+              pattern = ".yml",
+              full.names = TRUE
+            )
+            file.rename(
+              from = yml,
+              to = paste(temp, "_bookdown.yml", sep = "/")
+            )
+
             render_ind_report_shiny(
               x = input$ind_species,
               input = temp,
@@ -209,31 +231,31 @@ server <- function(input, output, session) {
               file_var = paste(input$ind_species, "_indicator_report.docx", sep = "")
             )
           }
-          
+
           setProgress(0.9)
-          
+
           # copy zip file for download
           file.copy("testZip.zip", file)
-          
+
           setProgress(1)
         }
       )
     },
-    
+
     contentType = "application/zip"
   )
-  
+
   # regression report ----
   output$report <- downloadHandler(
-    
+
     # create file name
     filename = function() {
       paste(input$species, "_regression_report.zip", sep = "")
     },
-    
+
     # create file content
     content = function(file) {
-      
+
       # rendering message
       id <- showNotification(
         "Rendering report...",
@@ -242,7 +264,7 @@ server <- function(input, output, session) {
         type = "message"
       )
       on.exit(removeNotification(id), add = TRUE)
-      
+
       # create temp dir
       this_dir <- paste(tempdir(), "BOOK", sep = "/")
       dir.create(this_dir)
@@ -250,7 +272,7 @@ server <- function(input, output, session) {
       # bookdown needs it
       # downloading zip file needs it (only sometimes???)
       setwd(this_dir)
-      
+
       # render report
       render_reg_report_shiny(
         stock_var = input$species,
@@ -261,7 +283,7 @@ server <- function(input, output, session) {
         file_var = paste(input$species, "_regression_report.docx", sep = ""),
         save_var = TRUE
       )
-      
+
       # copy to zip file for download
       file.copy(
         from = "testZip.zip",
@@ -270,7 +292,7 @@ server <- function(input, output, session) {
     },
     contentType = "application/zip"
   )
-  
+
   # regression options table
   output$table <- DT::renderDataTable(NEesp::make_html_table_thin(
     NEesp::regression_species_regions,

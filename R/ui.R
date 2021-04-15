@@ -6,7 +6,6 @@
 #' @importFrom magrittr %>%
 
 ui <- fluidPage(
-
   h1("Generate Northeast ESP Preliminary Reports"),
 
   navlistPanel(
@@ -39,15 +38,14 @@ ui <- fluidPage(
       ),
 
       actionButton("go", "click"),
-      
+
       htmlOutput("markdown")
-      
-      #htmlwidgets::shinyWidgetOutput("markdown",
+
+      # htmlwidgets::shinyWidgetOutput("markdown",
       #                               name = "datatable",
       #                               package = "DT",
       #                               width = "100%",
       #                               height = "100%")
-      
     ),
 
     # indicators rendered from local files
@@ -105,7 +103,7 @@ ui <- fluidPage(
         label = "Species",
         choices = NEesp::species_key$Species
       ),
-      
+
       h3("Do you want to use a local template?"),
       h4("Warning: Only upload one .yml!"),
       fileInput(
@@ -115,7 +113,7 @@ ui <- fluidPage(
         accept = c(".Rmd", ".yml"),
         placeholder = "Just use the package template!"
       ),
-      
+
       h3("Does your local template depend on sourced R scripts?"),
       h4("Warning: Scripts will be sourced before rendering the report; using `source` within the report is not supported."),
       fileInput(
@@ -187,4 +185,3 @@ ui <- fluidPage(
     )
   )
 )
-

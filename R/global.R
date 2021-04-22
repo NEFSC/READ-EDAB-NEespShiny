@@ -97,6 +97,11 @@ render_reg_report_shiny <- function(stock_var,
       full.names = TRUE,
       recursive = TRUE,
       pattern = ".csv"
+    ),
+    list.files(
+      full.names = TRUE,
+      recursive = TRUE,
+      pattern = ".RDS"
     )
   )
 
@@ -199,6 +204,11 @@ render_ind_report_shiny <- function(x,
       full.names = TRUE,
       recursive = TRUE,
       pattern = ".csv"
+    ),
+    list.files(
+      full.names = TRUE,
+      recursive = TRUE,
+      pattern = ".RDS"
     )
   )
 

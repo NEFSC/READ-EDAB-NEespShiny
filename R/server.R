@@ -24,17 +24,11 @@ server <- function(input, output, session) {
   # clearing temp files does not change anything
   # running javascript with htmlwidgets::JS() does not do anything (are there typos??)
   # removing r objects with rm() does not do anything
-
-
+  # extract html between <body> </body> - suggested fix but doesn't work
 
   observeEvent(input$go, {
 
-    # htmlwidgets::JS("$('#markdown').DataTable().table.destroy(true);
-    #               $('#markdown'.empty()")
-
-    # o$destroy(TRUE)
-    #  o$empty(TRUE)
-    # rendering message
+    # rendering message 
     id <- showNotification(
       "Rendering report...",
       duration = NULL,
@@ -61,32 +55,12 @@ server <- function(input, output, session) {
 
     # show report
 
-    # extract html between <body> </body> - suggested fix but doesn't work
-    
-    # html_body <- readLines(paste(this_dir, "package_output.html", sep = "/")) %>%
-    #  paste(collapse = " ") %>%
-    #  htmltools::HTML()
-
-    # html_body <- html_body %>%
-    #  stringr::str_split_fixed("<body>", n = 2)
-    # html_body <- html_body[,2]
-    # html_body <- html_body %>%
-    #  stringr::str_split_fixed("</body>", n = 2)
-    # html_body <- html_body[,1]
-
-    # output$markdown <- renderUI(htmltools::HTML(html_body))
-
     output$markdown <- renderUI({
       tags$iframe(
         srcdoc = htmltools::HTML(readLines(paste(this_dir, "package_output.html", sep = "/"))),
         width = "100%",
         height = "800px"
       )
-      # tagList(includeHTML(paste(this_dir, "package_output.html", sep = "/"))))
-      # output$markdown <- htmlwidgets::shinyRenderWidget(includeHTML(paste(this_dir, "package_output.html", sep = "/")),
-      #                                                  outputFunction = renderUI,
-      #                                                  quoted = FALSE,
-      #                                                  env = .GlobalEnv)
     })
   })
 
@@ -300,4 +274,33 @@ server <- function(input, output, session) {
   ),
   server = FALSE
   )
+  
+  # stock-indicator analysis ----
+  
+  observeEvent(input$go3, {
+    
+    # rendering message 
+    id <- showNotification(
+      "Rendering report...",
+      duration = NULL,
+      closeButton = FALSE,
+      type = "message"
+    )
+    
+    on.exit(removeNotification(id), add = TRUE)
+
+    # show report
+    
+    output$stock_indicator <- renderPlot({
+      NEesp::wrap_analysis(
+        file_path = input$si_file,
+        metric = input$si_metric,
+        pattern = input$si_pattern,
+        remove = input$si_remove,
+        lag = input$si_lag,
+        min_year = input$si_lag,
+        species = input$si_species
+      )
+    })
+  })
 }

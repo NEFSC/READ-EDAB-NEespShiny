@@ -310,8 +310,9 @@ server <- function(input, output, session) {
         pattern = new_pattern,
         remove = new_remove,
         lag = as.numeric(input$si_lag),
-        species = input$si_species
-      ) %>% ggpubr::as_ggplot()
+        species = input$si_species,
+        mode = "shiny"
+      )
 
     })
   })

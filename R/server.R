@@ -313,7 +313,7 @@ server <- function(input, output, session) {
         species = input$si_species,
         mode = "shiny"
       )
-
+      
     })
   })
 }

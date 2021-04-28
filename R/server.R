@@ -301,17 +301,18 @@ server <- function(input, output, session) {
       new_remove <- input$si_remove %>%
         stringr::str_split(pattern = ", ")
     }
-    
+
     output$stock_indicator <- renderPlot({
+      
       NEesp::wrap_analysis(
         file_path = input$si_file$datapath,
         metric = input$si_metric,
         pattern = new_pattern,
         remove = new_remove,
-        lag = input$si_lag,
-        min_year = input$si_lag,
+        lag = as.numeric(input$si_lag),
         species = input$si_species
-      )
+      ) %>% ggpubr::as_ggplot()
+
     })
   })
 }

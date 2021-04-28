@@ -204,7 +204,8 @@ ui <- fluidPage(
       selectInput(
         inputId = "si_species",
         label = "Species",
-        choices = NEesp::species_key$Species
+        choices = NEesp::species_key$Species,
+        selected = "Black sea bass"
       ),
       
       selectInput(
@@ -218,14 +219,7 @@ ui <- fluidPage(
         label = "Number of years by which stock data was lagged",
         choices = 0:10
       ),
-      
-      selectInput(
-        inputId = "si_min_year",
-        label = "Minimum year for recent time series analysis",
-        choices = 2000:2021,
-        selected = 2016
-      ),
-      
+
       textInput(
         inputId = "si_pattern",
         label = "Are there any patterns that should be filtered from the `Var` column? Separate multiple entries with a comma",
@@ -240,7 +234,8 @@ ui <- fluidPage(
       
       actionButton("go3", "click"),
       
-      plotOutput("stock_indicator")
+      h4(""),
+      plotOutput("stock_indicator", height = "800px")
     )
   )
 )

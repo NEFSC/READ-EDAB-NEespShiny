@@ -303,7 +303,6 @@ server <- function(input, output, session) {
     }
 
     output$stock_indicator <- renderPlot({
-      
       NEesp::wrap_analysis(
         file_path = input$si_file$datapath,
         metric = input$si_metric,

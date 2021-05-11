@@ -355,9 +355,12 @@ server <- function(input, output, session) {
         stringr::str_split(pattern = ", ")
     }
     
+    print(input$si_file$datapath %>% stringr::str_replace_all("\\\\", "/"))
+    
     writeLines(text = paste(first, "\n\n",
                             "```{r}\n",
-                            "file <- '", input$si_file$name, "'\n",
+                            "file_name <- '", input$si_file$name, "'\n",
+                            "file <- '", input$si_file$datapath %>% stringr::str_replace_all("\\\\", "/"), "'\n",
                             "met <- '", input$si_metric, "'\n",
                             "pat <- ", new_pattern, "\n",
                             "rem <- ", new_remove, "\n",

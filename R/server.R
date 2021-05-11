@@ -277,6 +277,7 @@ server <- function(input, output, session) {
   
   # stock-indicator analysis ----
   
+  ## display graph
   observeEvent(input$go3, {
     
     # rendering message 
@@ -314,5 +315,112 @@ server <- function(input, output, session) {
       )
       
     })
+    
+    output$add_to_rpt <- renderUI({actionButton("go4", "Add to report")})
+    output$download_rpt <- renderUI({downloadButton("go5", "Download report")})
   })
+  
+  ## add to report
+  observeEvent(input$go4, {
+    
+    # rendering message 
+    id <- showNotification(
+      "Adding to report...",
+      duration = NULL,
+      closeButton = FALSE,
+      type = "message"
+    )
+    
+    on.exit(removeNotification(id), add = TRUE)
+
+    # must set file path, pattern (or null), remove (or null), metric, and lag
+    # set species when rendering rmd
+    path <- paste(tempdir(), "BOOK", "body.Rmd", sep = "/")
+    if(!file.exists(path)){
+      dir.create(paste(tempdir(), "BOOK", sep = "/"))
+      file.create(path)
+      first <- c()
+    } else {first <- readLines(con = path) %>%
+      paste(collapse = "\n") 
+    }
+    
+    if(input$si_pattern == "ex: north, south, fall..."){
+      new_pattern <- toString("NULL")
+      new_remove <- toString("NULL")
+    } else {
+      new_pattern <- input$si_pattern %>%
+        stringr::str_split(pattern = ", ")
+      
+      new_remove <- input$si_remove %>%
+        stringr::str_split(pattern = ", ")
+    }
+    
+    writeLines(text = paste(first, "\n\n",
+                            "```{r}\n",
+                            "file <- '", input$si_file$name, "'\n",
+                            "met <- '", input$si_metric, "'\n",
+                            "pat <- ", new_pattern, "\n",
+                            "rem <- ", new_remove, "\n",
+                            "lag <- ", as.numeric(input$si_lag), "\n",
+                            "res <- knitr::knit_child(
+                            text = knitr::knit_expand(
+                            system.file('summary_esp_template/child.Rmd', package = 'NEesp')
+                            ),
+                            quiet = TRUE
+                            )
+                            cat(res, sep = '\\n\\n')", "\n",
+                            "```",
+                            sep = ""),
+               con = path
+      )
+    })
+  
+  ## download report
+  output$go5 <- downloadHandler(
+    
+    # create file name
+    filename = function() {
+      paste(input$si_species, "_esp_skeleton.zip", sep = "")
+    },
+    
+    # create file content
+    content = function(file) {
+      
+      # rendering message
+      id <- showNotification(
+        "Rendering report...",
+        duration = NULL,
+        closeButton = FALSE,
+        type = "message"
+      )
+      
+      on.exit(removeNotification(id), add = TRUE)
+
+          # create rmd file
+      print("creating file...")
+      intro <- readLines(system.file('summary_esp_template/intro.Rmd', package = 'NEesp')) %>%
+        paste(collapse = "\n")
+      body <- readLines(paste(tempdir(), "BOOK", "body.Rmd", sep = "/")) %>%
+        paste(collapse = "\n")
+      end <- readLines(system.file('summary_esp_template/end.Rmd', package = 'NEesp')) %>%
+        paste(collapse = "\n")
+      
+      path2 <- paste(tempdir(), "BOOK", "report.Rmd", sep = "/")
+      file.create(path2)
+      writeLines(text = paste(intro, body, end, sep = "\n\n"),
+                 con = path2)
+      
+      # knit rmd file
+      print("knitting file...")
+      rmarkdown::render(input = path2,
+                        params = list(species = input$si_species))
+      
+      # copy zip file for download
+      #file.copy("testZip.zip", file)
+      file.copy("report.doc", file)
+
+    },
+    
+    #contentType = "application/zip"
+  )
 }

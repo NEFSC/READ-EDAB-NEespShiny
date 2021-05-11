@@ -191,7 +191,7 @@ ui <- fluidPage(
       h2("Stock-Indicator Analysis"),
       
       h3("Select your input file"),
-      h4("This should be a .csv outputted from the 'Download a Regression Report' tab."),
+      p("This should be a .csv outputted from the 'Download a Regression Report' tab."),
       fileInput(
         inputId = "si_file",
         label = "Choose file to use",
@@ -233,6 +233,10 @@ ui <- fluidPage(
       ),
       
       actionButton("go3", "click"),
+      p(""),
+      uiOutput("add_to_rpt"),
+      p(""),
+      uiOutput("download_rpt"),
       
       h4(""),
       plotOutput("stock_indicator", height = "800px")

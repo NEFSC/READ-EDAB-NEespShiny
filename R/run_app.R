@@ -15,6 +15,7 @@ run_NEesp <- function() {
       onStop(function(start = start_dir) {
         setwd(start)
         clean_www()
+        clean_book()
       })
     }
   )

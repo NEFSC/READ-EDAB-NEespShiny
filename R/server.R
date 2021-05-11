@@ -277,7 +277,7 @@ server <- function(input, output, session) {
   
   # stock-indicator analysis ----
   
-  ## display graph
+  ## display graph ----
   observeEvent(input$go3, {
     
     # rendering message 
@@ -320,7 +320,7 @@ server <- function(input, output, session) {
     output$download_rpt <- renderUI({downloadButton("go5", "Download report")})
   })
   
-  ## add to report
+  ## add to report ----
   observeEvent(input$go4, {
     
     # rendering message 
@@ -378,7 +378,7 @@ server <- function(input, output, session) {
       )
     })
   
-  ## download report
+  ## download report ----
   output$go5 <- downloadHandler(
     
     # create file name
@@ -388,7 +388,7 @@ server <- function(input, output, session) {
     
     # create file content
     content = function(file) {
-      
+
       # rendering message
       id <- showNotification(
         "Rendering report...",
@@ -398,9 +398,8 @@ server <- function(input, output, session) {
       )
       
       on.exit(removeNotification(id), add = TRUE)
-
-          # create rmd file
-      print("creating file...")
+      
+      # create rmd file
       intro <- readLines(system.file('summary_esp_template/intro.Rmd', package = 'NEesp')) %>%
         paste(collapse = "\n")
       body <- readLines(paste(tempdir(), "BOOK", "body.Rmd", sep = "/")) %>%
@@ -414,16 +413,37 @@ server <- function(input, output, session) {
                  con = path2)
       
       # knit rmd file
-      print("knitting file...")
       rmarkdown::render(input = path2,
-                        params = list(species = input$si_species))
-      
-      # copy zip file for download
-      #file.copy("testZip.zip", file)
-      file.copy("report.doc", file)
+                        params = list(species = input$si_species),
+                        envir = new.env() # render in clean env or else `file` variable will mess up download later
+                        )
 
+      # zip files
+      files2zip <- c(
+        list.files(
+          path = paste(tempdir(), "BOOK", sep = "/"),
+          full.names = TRUE,
+          recursive = TRUE,
+          pattern = "report.doc"
+        ),
+        list.files(
+          path = paste(tempdir(), "BOOK", sep = "/"),
+          full.names = TRUE,
+          recursive = TRUE,
+          pattern = ".png"
+        )
+      )
+
+      utils::zip(paste(tempdir(), "BOOK", "testZip", sep = "/"),
+                 files = files2zip,
+                 flags = "-j"
+      )
+      
+      file.copy(
+        from = paste(tempdir(), "BOOK", "testZip.zip", sep = "/"),
+        to = file
+      )
     },
-    
-    #contentType = "application/zip"
+    contentType = "application/zip"
   )
 }

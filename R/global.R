@@ -311,6 +311,55 @@ render_ind_page_shiny <- function(x,
   )
 }
 
+#' Render stock-indicator ESP skeleton report
+#'
+#' Renders a stock-indicator ESP skeleton report
+
+render_stock_indicator <- function(species_in) {
+  # create rmd file
+  print("creating file...")
+  intro <- readLines(system.file('summary_esp_template/intro.Rmd', package = 'NEesp')) %>%
+    paste(collapse = "\n")
+  body <- readLines(paste(tempdir(), "BOOK", "body.Rmd", sep = "/")) %>%
+    paste(collapse = "\n")
+  end <- readLines(system.file('summary_esp_template/end.Rmd', package = 'NEesp')) %>%
+    paste(collapse = "\n")
+  
+  path2 <- paste(tempdir(), "BOOK", "report.Rmd", sep = "/")
+  file.create(path2)
+  writeLines(text = paste(intro, body, end, sep = "\n\n"),
+             con = path2)
+  
+  # knit rmd file
+  print("knitting file...")
+  rmarkdown::render(input = path2,
+                    params = list(species = species_in))
+  
+  # zip files
+  print("zipping files...")
+  files2zip <- c(
+    list.files(
+      path = paste(tempdir(), "BOOK", sep = "/"),
+      full.names = TRUE,
+      recursive = TRUE,
+      pattern = "report.doc"
+    ),
+    list.files(
+      path = paste(tempdir(), "BOOK", sep = "/"),
+      full.names = TRUE,
+      recursive = TRUE,
+      pattern = ".png"
+    )
+  )
+  
+  zfile <- paste(tempdir(), "BOOK", "testZip", sep = "/")
+  utils::zip(zfile,
+             files = files2zip
+  )
+  
+  return(zfile)
+}
+
 #' Clean `www` folder
 #'
 #' Erases the `www` folder in the NEespShiny library folder at the end of the session
@@ -322,4 +371,14 @@ clean_www <- function() {
       recursive = TRUE
     ))
   }
+}
+
+#' Clean temp `BOOK` folder
+#'
+#' Erases the `BOOK` folder in the temp directory at the end of the session
+
+clean_book <- function() {
+  unlink(paste(tempdir(), "BOOK", sep = "/"),
+         recursive = TRUE
+    )
 }

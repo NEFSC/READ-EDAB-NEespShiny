@@ -278,7 +278,10 @@ server <- function(input, output, session) {
   # stock-indicator analysis ----
 
   ## display graph ----
-  observeEvent(input$go3, {
+  
+  # reactive expression so it doesn't change when the parameters are changed
+  # only changes when button is clicked
+  react_plot <- eventReactive(input$go3, {
 
     # rendering message
     id <- showNotification(
@@ -303,7 +306,6 @@ server <- function(input, output, session) {
         stringr::str_split(pattern = ", ")
     }
 
-    output$stock_indicator <- renderPlot({
       NEesp::wrap_analysis(
         file_path = input$si_file$datapath,
         metric = input$si_metric,
@@ -313,18 +315,20 @@ server <- function(input, output, session) {
         species = input$si_species,
         mode = "shiny"
       )
-    })
 
     output$add_to_rpt <- renderUI({
       actionButton("go4", "Add to report")
     })
     output$text <- renderUI({
-      textOutput("txt")
+      htmlOutput("txt")
     })
     output$download_rpt <- renderUI({
       downloadButton("go5", "Download report")
     })
   })
+  
+  # render reactive output
+  output$stock_indicator <- renderPlot({react_plot()})
 
   ## add to report ----
   observeEvent(input$go4, {
@@ -409,12 +413,12 @@ server <- function(input, output, session) {
     if ("report.Rmd" %in% data_added) {
       data_added <- data_added[-which(data_added == "report.Rmd")]
     }
-    output$txt <- renderText({
-      paste("Data added to report:",
-        paste(data_added, collapse = "\n") %>%
-          stringr::str_remove(".Rmd"),
-        sep = "\n\n"
-      )
+    output$txt <- renderUI({
+      HTML(paste("Data added to report:",
+        paste(data_added, collapse = "<br/>") %>%
+          stringr::str_remove_all(".Rmd"),
+        sep = "<br/>"
+      ))
     })
   })
 
@@ -452,7 +456,6 @@ server <- function(input, output, session) {
         full.names = TRUE,
         pattern = ".Rmd"
       )
-      print(data_added)
 
       if (stringr::str_detect(toString(data_added), "intro.Rmd")) {
         data_added <- data_added[-stringr::str_which(data_added, "intro.Rmd")]
@@ -464,8 +467,6 @@ server <- function(input, output, session) {
       if (stringr::str_detect(toString(data_added), "report.Rmd")) {
         data_added <- data_added[-stringr::str_which(data_added, "report.Rmd")]
       }
-      print("BAD FILES REMOVED")
-      print(data_added)
       body <- ""
       for (i in data_added) {
         print(i)
@@ -502,7 +503,12 @@ server <- function(input, output, session) {
           recursive = TRUE,
           pattern = "report.doc"
         ),
-        paste(tempdir(), "SI-BOOK", "figures", sep = "/")
+        list.files(
+          path = paste(tempdir(), "SI-BOOK", sep = "/"),
+          full.names = TRUE,
+          recursive = TRUE,
+          pattern = ".png"
+        )
       )
 
       # can't have figures folder without changing working directory or listing all parent directories up to ~

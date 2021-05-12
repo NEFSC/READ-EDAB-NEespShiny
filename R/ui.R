@@ -241,7 +241,9 @@ ui <- fluidPage(
       uiOutput("download_rpt"),
 
       h4(""),
-      plotOutput("stock_indicator", height = "800px")
+      plotOutput(
+        "stock_indicator"
+      )
     )
   )
 )

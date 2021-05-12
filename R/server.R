@@ -278,7 +278,7 @@ server <- function(input, output, session) {
   # stock-indicator analysis ----
 
   ## display graph ----
-  
+
   # reactive expression so it doesn't change when the parameters are changed
   # only changes when button is clicked
   react_plot <- eventReactive(input$go3, {
@@ -306,15 +306,15 @@ server <- function(input, output, session) {
         stringr::str_split(pattern = ", ")
     }
 
-      NEesp::wrap_analysis(
-        file_path = input$si_file$datapath,
-        metric = input$si_metric,
-        pattern = new_pattern,
-        remove = new_remove,
-        lag = as.numeric(input$si_lag),
-        species = input$si_species,
-        mode = "shiny"
-      )
+    NEesp::wrap_analysis(
+      file_path = input$si_file$datapath,
+      metric = input$si_metric,
+      pattern = new_pattern,
+      remove = new_remove,
+      lag = as.numeric(input$si_lag),
+      species = input$si_species,
+      mode = "shiny"
+    )
 
     output$add_to_rpt <- renderUI({
       actionButton("go4", "Add to report")
@@ -326,9 +326,30 @@ server <- function(input, output, session) {
       downloadButton("go5", "Download report")
     })
   })
-  
+
   # render reactive output
-  output$stock_indicator <- renderPlot({react_plot()})
+  # output$stock_indicator <- renderPlot({react_plot()},
+  #                                     height = 3200)
+
+  # height based on Var
+  react_h <- eventReactive(input$go3, {
+    dat <- read.csv(input$si_file$datapath)
+    h <- length(unique(dat$Var))
+    h
+  })
+
+  # render reactive output
+  observeEvent(react_h(), {
+    h <- as.numeric(react_h()) * 800
+
+    output$stock_indicator <- renderPlot(
+      {
+        react_plot()
+      },
+      height = 3200
+    )
+  })
+
 
   ## add to report ----
   observeEvent(input$go4, {

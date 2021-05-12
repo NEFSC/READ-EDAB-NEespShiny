@@ -7,5 +7,5 @@
 clean_www()
 }
 \description{
-Erases and re-creates the \code{www} folder in the NEespShiny library folder
+Erases the \code{www} folder in the NEespShiny library folder at the end of the session
 }

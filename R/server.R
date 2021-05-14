@@ -346,7 +346,7 @@ server <- function(input, output, session) {
       {
         react_plot()
       },
-      height = 3200
+      height = h
     )
   })
 

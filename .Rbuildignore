@@ -1,6 +1,14 @@
-^\.github$
-^\black-sea-bass$
 ^LICENSE\.txt$
 ^README\.md$
+^_pkgdown\.yml$
 ^\.Rproj\.user$
 ^.*\.Rproj$
+
+RData$
+Renviron$
+Rhistory$
+
+^\.github\*$
+^docs$
+^black-sea-bass$
+^pkgdown$

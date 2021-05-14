@@ -2,6 +2,3 @@
 .RData
 .Renviron
 .Rhistory
-.github/
-_pkgdown.yml
-^black-sea-bass/$

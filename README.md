@@ -1,6 +1,6 @@
 # Ecosystem and Socioeconomic Profiles
 
-![gitleaks](https://github.com/NOAA-EDAB/esp_data_aggregation/workflows/gitleaks/badge.svg)
+![gitleaks](https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg)
 
 ## View current data products
 https://noaa-edab.github.io/ESP_docs/docs
@@ -15,7 +15,14 @@ Here we adapt the ESP process for use in the management of Northeast stocks. Our
 3. Create a detailed report for the most vulnerable stocks, incorporating data from the originial risk assessment as well as detailed species-specific information.
 
 ## Shiny App
-This branch houses a Shiny app that will provide a Graphical User Interface (GUI) for ESP data visualization and report generation. You can install the preliminary app: `remotes::install_github("NOAA-EDAB/esp_data_aggregation@shiny")`. If installation throws an error, you may have to override package installation errors from warnings with: `sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true")`. Once you have installed the package, you can use the Shiny app by running: `NEespShiny::run_NEesp()`.
+This repo houses a Shiny app that will provide a Graphical User Interface (GUI) for ESP data visualization and report generation. You can install the preliminary app: `remotes::install_github("NOAA-EDAB/NEespShiny")`. If installation throws an error, you may have to override package installation errors from warnings with: `sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true")`. Once you have installed the package, you can use the Shiny app by running: `NEespShiny::run_NEesp()`.
+
+## The Northeast ESP suite 
+There are currently 4 github repos associated with the Northeast ESP initiative.
+1. [`NOAA-EDAB/esp_data_aggregation`](https://github.com/NOAA-EDAB/esp_data_aggregation) is the original repo and currently houses development and exploratory work.
+2. [`NOAA-EDAB/NEesp`](https://github.com/NOAA-EDAB/NEesp) houses an R package that contains relevant data, functions for low-level data analysis and plotting, and report templates.
+3. [`NOAA-EDAB/NEespShiny`](https://github.com/NOAA-EDAB/NEespShiny) houses an R Shiny app (in the form of an R package) that provides a graphical user interface for creating reports with the `NEesp` package.
+4. [`NOAA-EDAB/ESP_docs`](https://github.com/NOAA-EDAB/ESP_docs) houses reports on Northeast stocks and ecosystem/socioeconomic indicators.
 
 ## Next steps
 We continue to synthesize existing data on Northeast stocks, environment, and socioeconomics. We are currently refining our data analyses and beginning the preliminary risk assessment process. 

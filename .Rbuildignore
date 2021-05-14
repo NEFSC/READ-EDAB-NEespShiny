@@ -1,4 +1,5 @@
 ^\.github$
+^\black-sea-bass$
 ^LICENSE\.txt$
 ^README\.md$
 ^\.Rproj\.user$

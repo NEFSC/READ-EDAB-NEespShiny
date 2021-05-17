@@ -15,7 +15,7 @@ Here we adapt the ESP process for use in the management of Northeast stocks. Our
 3. Create a detailed report for the most vulnerable stocks, incorporating data from the originial risk assessment as well as detailed species-specific information.
 
 ## Shiny App
-This repo houses a Shiny app that will provide a Graphical User Interface (GUI) for ESP data visualization and report generation. You can install the preliminary app: `remotes::install_github("NOAA-EDAB/NEespShiny")`. If installation throws an error, you may have to override package installation errors from warnings with: `sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true")`. Once you have installed the package, you can use the Shiny app by running: `NEespShiny::run_NEesp()`.
+This repo houses a Shiny app that will provide a Graphical User Interface (GUI) for ESP data visualization and report generation. You can install the preliminary app: `remotes::install_github("NOAA-EDAB/NEespShiny")`. If installation throws an error, you may have to override package installation errors from warnings with: `Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true")`. Once you have installed the package, you can use the Shiny app by running: `NEespShiny::run_NEesp()`.
 
 ## The Northeast ESP suite 
 There are currently 4 github repos associated with the Northeast ESP initiative.

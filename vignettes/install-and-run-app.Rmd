@@ -2,7 +2,7 @@
 title: "Install and run app"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{second-vignette}
+  %\VignetteIndexEntry{Install and run app}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

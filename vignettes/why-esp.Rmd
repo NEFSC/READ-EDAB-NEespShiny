@@ -2,7 +2,7 @@
 title: "Why ESP?"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{first-vignette}
+  %\VignetteIndexEntry{Why ESP?}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

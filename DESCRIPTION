@@ -1,6 +1,6 @@
 Package: NEespShiny
 Title: Shiny App to Generate Preliminary ESP Reports for the Northeast
-Version: 0.1.0
+Version: 0.1.1
 Description: Generates preliminary Ecosystem and Socioeconomic Profiles for Northeast and Mid-Atlantic USA fishery stocks in a Shiny app.
 License: file LICENSE
 Authors@R: person("Abigail", "Tyrell", email = "abigail.tyrell@noaa.gov",

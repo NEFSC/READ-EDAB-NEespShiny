@@ -4,7 +4,8 @@ Version: 0.1.0
 Description: Generates preliminary Ecosystem and Socioeconomic Profiles for Northeast and Mid-Atlantic USA fishery stocks in a Shiny app.
 License: file LICENSE
 Authors@R: person("Abigail", "Tyrell", email = "abigail.tyrell@noaa.gov",
-  role = c("aut", "cre"))
+  role = c("aut", "cre"),
+  comment = c(ORCID = "0000-0002-6656-8470"))
 Depends:
     shiny
 Imports:

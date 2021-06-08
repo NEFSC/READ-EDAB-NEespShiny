@@ -47,7 +47,8 @@ jobs:
           
       - name: Render pkgdown
         run: |
-          Rscript -e 'pkgdown::build_site()'
+          Rscript -e 'install.packages("preferably")
+          pkgdown::build_site()'
           
       - name: Deploy to Github
         uses: JamesIves/github-pages-deploy-action@4.1.1

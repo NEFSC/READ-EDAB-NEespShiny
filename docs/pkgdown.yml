@@ -1,8 +1,11 @@
-pandoc: '2.13'
+pandoc: '2.14'
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   install-and-run-app: install-and-run-app.html
   why-esp: why-esp.html
-last_built: 2021-05-17T22:05Z
+last_built: 2021-06-08T14:35Z
+urls:
+  reference: https://noaa-edab.github.io/NEespShiny//reference
+  article: https://noaa-edab.github.io/NEespShiny//articles
 

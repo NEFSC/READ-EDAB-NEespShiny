@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//index.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//reference/clean_book.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//reference/clean_www.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//reference/render_ind_page_shiny.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//reference/render_ind_report_shiny.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//reference/render_reg_report_shiny.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//reference/run_NEesp.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//reference/server.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//reference/ui.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//articles/install-and-run-app.html</loc>
+  </url>
+  <url>
+    <loc>https://noaa-edab.github.io/NEespShiny//articles/why-esp.html</loc>
+  </url>
+</urlset>

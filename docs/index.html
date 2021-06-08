@@ -5,9 +5,26 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shiny App to Generate Preliminary ESP Reports for the Northeast • NEespShiny</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<!-- Inform modern browsers that this page supports both dark and light color schemes,
+  and the page author prefers light. --><meta name="color-scheme" content="dark light">
+<script>
+  // If `prefers-color-scheme` is not supported, fall back to light mode.
+  // i.e. In this case, inject the `light` CSS before the others, with
+  // no media filter so that it will be downloaded with highest priority.
+  if (window.matchMedia("(prefers-color-scheme: dark)").media === "not all") {
+    document.documentElement.style.display = "none";
+    document.head.insertAdjacentHTML(
+      "beforeend",
+      "<link id=\"css\" rel=\"stylesheet\" href=\"https://bootswatch.com/3/flatly/bootstrap.css\" onload=\"document.documentElement.style.display = ''\">"
+    );
+  }
+</script><title>Shiny App to Generate Preliminary ESP Reports for the Northeast • NEespShiny</title>
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- Flatly Theme - Light  --><link id="css-light" rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.css" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
+<!-- Darkly Theme - Dark --><link id="css-dark" rel="stylesheet" href="https://bootswatch.com/3/darkly/bootstrap.css" media="(prefers-color-scheme: dark)">
+<!-- preferably CSS --><link rel="stylesheet" href="preferably.css">
+<link id="css-code-light" rel="stylesheet" href="code-color-scheme-light.css" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
+<link id="css-code-dark" rel="stylesheet" href="code-color-scheme-dark.css" media="(prefers-color-scheme: dark)">
+<!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -31,24 +48,15 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">NEespShiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
@@ -61,8 +69,43 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="reference/index.html">Functions</a>
+</li>
+<li>
+  <a href="news/index.html">News</a>
+</li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="mailto:abigail.tyrell@noaa.gov">
+    <span class="fas fa-paper-plane fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/NOAA-EDAB/NEespShiny/issues/">
+    <span class="fas fa-question-circle fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/NOAA-EDAB/NEespShiny">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://nmfs-general-modeling-tools.github.io/">
+    <span class="fas fa-fish"></span>
+     
+  </a>
+</li>
+        
+        
+
+
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -77,7 +120,7 @@
 <div id="ecosystem-and-socioeconomic-profiles" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#ecosystem-and-socioeconomic-profiles" class="anchor"></a>Ecosystem and Socioeconomic Profiles</h1></div>
-<p><img src="https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg" alt="gitleaks"></p>
+
 <div id="view-current-data-products" class="section level2">
 <h2 class="hasAnchor">
 <a href="#view-current-data-products" class="anchor"></a>View current data products</h2>
@@ -87,49 +130,42 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>Ecosystem and Socioeconomic Profiles (ESPs) are a scientific product to support <a href="https://www.integratedecosystemassessment.noaa.gov/">Integrated Ecosystem Assessment</a> (IEA). IEA seeks to improve understanding and management of fisheries through incorporating natural, social, and economic data into fisheries analyses and management plans. ESPs are a structured framework developed by the Alaska Science Center to integrate ecosystem and socioeconomic information into the stock assessment process.<sup><a href="https://meetings.npfmc.org/CommentReview/DownloadFile?p=8f5233fb-3b62-4571-9b49-8bb7ce675916.pdf&amp;fileName=ESP_Shotwell.pdf">1</a></sup></p>
-<p>Here we adapt the ESP process for use in the management of Northeast stocks. Our scientific roadmap consists of these steps:</p>
-<ol>
-<li>Gather existing data on ecology, biology, socioeconomics, and the human dimension of Northeast fisheries.</li>
-<li>Conduct a risk analysis of Northeast stocks to determine which stocks are most vulnerable.</li>
-<li>Create a detailed report for the most vulnerable stocks, incorporating data from the originial risk assessment as well as detailed species-specific information.</li>
-</ol>
+<p>Here we adapt the ESP process for use in the management of Northeast stocks. Our scientific roadmap consists of these steps: 1. Gather existing data on ecology, biology, socioeconomics, and the human dimension of Northeast fisheries. 2. Conduct a risk analysis of Northeast stocks to determine which stocks are most vulnerable. 3. Create a detailed report for the most vulnerable stocks, incorporating data from the originial risk assessment as well as detailed species-specific information.</p>
 </div>
 <div id="shiny-app" class="section level2">
 <h2 class="hasAnchor">
 <a href="#shiny-app" class="anchor"></a>Shiny App</h2>
-<p>This repo houses a Shiny app that will provide a Graphical User Interface (GUI) for ESP data visualization and report generation. You can install the preliminary app: <code><a href="https://remotes.r-lib.org/reference/install_github.html">remotes::install_github("NOAA-EDAB/NEespShiny")</a></code>. If installation throws an error, you may have to override package installation errors from warnings with: <code><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true")</a></code>. Once you have installed the package, you can use the Shiny app by running: <code><a href="reference/run_NEesp.html">NEespShiny::run_NEesp()</a></code>.</p>
+<p>This repo houses a Shiny app that provides a Graphical User Interface (GUI) for ESP data visualization and report generation.</p>
 </div>
 <div id="the-northeast-esp-suite" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-northeast-esp-suite" class="anchor"></a>The Northeast ESP suite</h2>
-<p>There are currently 4 github repos associated with the Northeast ESP initiative.</p>
-<ol>
-<li>
-<a href="https://github.com/NOAA-EDAB/esp_data_aggregation"><code>NOAA-EDAB/esp_data_aggregation</code></a> is the original repo and currently houses development and exploratory work.</li>
-<li>
-<a href="https://github.com/NOAA-EDAB/NEesp"><code>NOAA-EDAB/NEesp</code></a> houses an R package that contains relevant data, functions for low-level data analysis and plotting, and report templates.</li>
-<li>
-<a href="https://github.com/NOAA-EDAB/NEespShiny"><code>NOAA-EDAB/NEespShiny</code></a> houses an R Shiny app (in the form of an R package) that provides a graphical user interface for creating reports with the <code>NEesp</code> package.</li>
-<li>
-<a href="https://github.com/NOAA-EDAB/ESP_docs"><code>NOAA-EDAB/ESP_docs</code></a> houses reports on Northeast stocks and ecosystem/socioeconomic indicators.</li>
-</ol>
+<p>There are currently 4 github repos associated with the Northeast ESP initiative. 1. <a href="https://github.com/NOAA-EDAB/esp_data_aggregation"><code>NOAA-EDAB/esp_data_aggregation</code></a> is the original repo and currently houses development and exploratory work. 2. <a href="https://github.com/NOAA-EDAB/NEesp"><code>NOAA-EDAB/NEesp</code></a> houses an R package that contains relevant data, functions for low-level data analysis and plotting, and report templates. 3. <a href="https://github.com/NOAA-EDAB/NEespShiny"><code>NOAA-EDAB/NEespShiny</code></a> houses an R Shiny app (in the form of an R package) that provides a graphical user interface for creating reports with the <code>NEesp</code> package. 4. <a href="https://github.com/NOAA-EDAB/ESP_docs"><code>NOAA-EDAB/ESP_docs</code></a> houses reports on Northeast stocks and ecosystem/socioeconomic indicators.</p>
 </div>
 <div id="next-steps" class="section level2">
 <h2 class="hasAnchor">
 <a href="#next-steps" class="anchor"></a>Next steps</h2>
 <p>We continue to synthesize existing data on Northeast stocks, environment, and socioeconomics. We are currently refining our data analyses and beginning the preliminary risk assessment process.</p>
 </div>
-<div id="developers" class="section level2">
+<div id="northeast-esp-developers" class="section level2">
 <h2 class="hasAnchor">
-<a href="#developers" class="anchor"></a>Developers</h2>
+<a href="#northeast-esp-developers" class="anchor"></a>Northeast ESP Developers</h2>
 <table class="table">
 <thead><tr class="header">
-<th><a href="https://github.com/atyrell3">atyrell3</a></th>
-<th><a href="https://github.com/rtabandera">rtabandera</a></th>
+<th>
+<a href="https://github.com/atyrell3">atyrell3</a>
+</th>
+<th>
+<a href="https://github.com/rtabandera">rtabandera</a>
+</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td><a href="https://github.com/atyrell3"><img src="https://avatars.githubusercontent.com/u/77738923?s=100&amp;u=92e54f60ca179f3e41c1a3610fb3ecdb9e233434&amp;v=4"></a></td>
-<td><a href="https://github.com/rtabandera"><img src="https://avatars.githubusercontent.com/u/64960823?s=100&amp;u=ea5abeca602e43d461e964fe8283f703aef63c61&amp;v=4"></a></td>
+<td>
+<a href="https://github.com/atyrell3"><img src="https://avatars.githubusercontent.com/u/77738923?s=100&amp;u=92e54f60ca179f3e41c1a3610fb3ecdb9e233434&amp;v=4"></a>
+</td>
+<td>
+<a href="https://github.com/rtabandera"><img src="https://avatars.githubusercontent.com/u/64960823?s=100&amp;u=ea5abeca602e43d461e964fe8283f703aef63c61&amp;v=4"></a>
+</td>
 </tr></tbody>
 </table>
 <div id="legal-disclaimer" class="section level4">
@@ -152,20 +188,30 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Abigail Tyrell <br><small class="roles"> Author, maintainer </small>  </li>
+<li>
+<a href="https://github.com/atyrell3">Abigail Tyrell</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-6656-8470" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/NOAA-EDAB/NEespShiny"><img src="https://img.shields.io/badge/devel%20version-0.1.1-blue.svg"></a></li>
+<li><a href="https://github.com/NOAA-EDAB/NEespShiny/commits/main"><img src="https://img.shields.io/github/last-commit/NOAA-EDAB/NEespShiny.svg"></a></li>
+<li><a href="https://github.com/NOAA-EDAB/NEespShiny"><img src="https://img.shields.io/github/languages/code-size/NOAA-EDAB/NEespShiny.svg"></a></li>
+<li><a href="https://github.com/NOAA-EDAB/NEespShiny/actions"><img src="https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Abigail Tyrell.</p>
+  <p>Developed by <a href="https://github.com/atyrell3">Abigail Tyrell</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p>Made with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1, using <a href="https://preferably.amirmasoudabdol.name/?source=footer">preferably</a> template.</p>
 </div>
 
       </footer>

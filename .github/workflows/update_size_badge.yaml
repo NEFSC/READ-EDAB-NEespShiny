@@ -13,9 +13,8 @@ jobs:
           
       - name: Extract branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-        
+        run: echo "${GITHUB_REF##*/}"
+
       - name: Install Pandoc
         run: brew install pandoc
         shell: bash
@@ -41,6 +40,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
           token: ${{ secrets.GH_PAT }}
-          branch: ${{ steps.extract_branch.outputs.branch }} # The branch the action should deploy to.
+          branch: ${GITHUB_REF##*/} # The branch the action should deploy to.
           folder: . # The folder the action should deploy.
           clean: false # Automatically remove deleted files from the deploy branch

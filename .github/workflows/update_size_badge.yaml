@@ -16,11 +16,6 @@ jobs:
           echo "$GITHUB_REF"
         shell: bash
         
-      - name: See what's going on with ref
-        run: |
-          echo "$github_ref"
-        shell: bash
-        
       - name: Install Pandoc
         run: brew install pandoc
         shell: bash
@@ -46,6 +41,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
           token: ${{ secrets.GH_PAT }}
-          branch: $github_ref # The branch the action should deploy to.
+          branch: $GITHUB_REF # The branch the action should deploy to.
           folder: . # The folder the action should deploy.
           clean: false # Automatically remove deleted files from the deploy branch

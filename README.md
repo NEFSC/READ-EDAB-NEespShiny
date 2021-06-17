@@ -10,7 +10,6 @@ output: md_document
 [![](https://img.shields.io/badge/devel%20version-0.1.1-blue.svg)](https://github.com/NOAA-EDAB/NEespShiny)
 [![](https://img.shields.io/github/last-commit/NOAA-EDAB/NEespShiny.svg)](https://github.com/NOAA-EDAB/NEespShiny/commits/main)
 ![](https://img.shields.io/badge/repo%20size-13.9%20MB-blue.svg)
-
 [![](https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg)](https://github.com/NOAA-EDAB/NEespShiny/actions)
 
 ## View current data products

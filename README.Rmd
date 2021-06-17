@@ -7,13 +7,23 @@ output: md_document
 
 # Ecosystem and Socioeconomic Profiles
 
+[![](https://img.shields.io/badge/devel%20version-0.1.1-blue.svg)](https://github.com/NOAA-EDAB/NEespShiny)
+[![](https://img.shields.io/github/last-commit/NOAA-EDAB/NEespShiny.svg)](https://github.com/NOAA-EDAB/NEespShiny/commits/main)
 ```{r, echo = FALSE, results='asis', message=FALSE}
-cat(
-  badger::badge_devel("NOAA-EDAB/NEespShiny", "blue"),
-  badger::badge_last_commit("NOAA-EDAB/NEespShiny"),
-  badger::badge_code_size("NOAA-EDAB/NEespShiny")
-)
+`%>%` <- magrittr::`%>%`
+# custom code size badge
+files <- list.files(recursive = TRUE, all.files = TRUE) %>%
+  stringr::str_subset(pattern = ".Rproj", negate = TRUE) %>%
+  stringr::str_subset(pattern = ".Rhistory", negate = TRUE) %>%
+  stringr::str_subset(pattern = ".RData", negate = TRUE) %>%
+  #stringr::str_subset(pattern = ".Ruserdata", negate = TRUE) %>%
+  stringr::str_subset(pattern = ".Renviron", negate = TRUE)
+total_size <- (sum(file.size(files))/1048576) %>%
+  stringr::str_trunc(width = 4, ellipsis = "")
+
+cat(badger::badge_custom("repo size", paste(total_size, "MB"), color = "blue"))
 ```
+
 [![](https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg)](https://github.com/NOAA-EDAB/NEespShiny/actions)
 
 ## View current data products
@@ -24,18 +34,25 @@ Ecosystem and Socioeconomic Profiles (ESPs) are a scientific product to support 
 
 
 Here we adapt the ESP process for use in the management of Northeast stocks. Our scientific roadmap consists of these steps:
+
 1. Gather existing data on ecology, biology, socioeconomics, and the human dimension of Northeast fisheries.
+
 2. Conduct a risk analysis of Northeast stocks to determine which stocks are most vulnerable.
-3. Create a detailed report for the most vulnerable stocks, incorporating data from the originial risk assessment as well as detailed species-specific information.
+
+3. Create a detailed report for the most vulnerable stocks, incorporating data from the original risk assessment as well as detailed species-specific information.
 
 ## Shiny App
 This repo houses a Shiny app that provides a Graphical User Interface (GUI) for ESP data visualization and report generation. 
 
 ## The Northeast ESP suite 
 There are currently 4 github repos associated with the Northeast ESP initiative.
+
 1. [`NOAA-EDAB/esp_data_aggregation`](https://github.com/NOAA-EDAB/esp_data_aggregation) is the original repo and currently houses development and exploratory work.
+
 2. [`NOAA-EDAB/NEesp`](https://github.com/NOAA-EDAB/NEesp) houses an R package that contains relevant data, functions for low-level data analysis and plotting, and report templates.
+
 3. [`NOAA-EDAB/NEespShiny`](https://github.com/NOAA-EDAB/NEespShiny) houses an R Shiny app (in the form of an R package) that provides a graphical user interface for creating reports with the `NEesp` package.
+
 4. [`NOAA-EDAB/ESP_docs`](https://github.com/NOAA-EDAB/ESP_docs) houses reports on Northeast stocks and ecosystem/socioeconomic indicators.
 
 ## Next steps

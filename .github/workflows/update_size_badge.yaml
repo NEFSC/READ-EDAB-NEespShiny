@@ -10,6 +10,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ env.GITHUB_REF }}
+          
+      - name: See what's going on with ref
+        run: echo ${{ env.github_ref }}
+        shell: bash
         
       - name: Install Pandoc
         run: brew install pandoc

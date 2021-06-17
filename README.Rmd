@@ -23,7 +23,6 @@ total_size <- (sum(file.size(files))/1048576) %>%
 
 cat(badger::badge_custom("repo size", paste(total_size, "MB"), color = "blue"))
 ```
-
 [![](https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg)](https://github.com/NOAA-EDAB/NEespShiny/actions)
 
 ## View current data products

@@ -13,9 +13,7 @@ jobs:
           
       - name: Extract branch name
         shell: bash
-        run: | 
-          echo "${GITHUB_REF##*/}"
-          [set-output name=branch;]$(echo "${GITHUB_REF##*/}")
+        run: echo "::set-output name=branch::(echo ${GITHUB_REF##*/})"
         id: extract_branch
 
       - name: Install Pandoc

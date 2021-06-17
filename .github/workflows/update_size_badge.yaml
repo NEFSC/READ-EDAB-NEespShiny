@@ -12,7 +12,11 @@ jobs:
           ref: ${{ env.GITHUB_REF }}
           
       - name: See what's going on with ref
-        run: echo ${{ env.github_ref }}
+        run: |
+          echo ${{ env.github_ref }}
+          echo ${{ env.GITHUB_REF }}
+          echo "$GITHUB_REF"
+          echo "$github_ref"
         shell: bash
         
       - name: Install Pandoc

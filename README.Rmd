@@ -16,7 +16,8 @@ total_size <- (sum(file.size(files))/1048576) %>%
 
 cat(badger::badge_devel("NOAA-EDAB/NEespShiny", "blue"),
     badger::badge_last_commit("NOAA-EDAB/NEespShiny"),
-    badger::badge_custom("repo size", paste(total_size, "MB"), color = "blue"))
+    badger::badge_custom("repo size", paste(total_size, "MB"), color = "blue", url = "https://github.com/NOAA-EDAB/NEespShiny"),
+    sep = "\n")
 ```
 [![](https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg)](https://github.com/NOAA-EDAB/NEespShiny/actions/workflows/secretScan.yml)
 

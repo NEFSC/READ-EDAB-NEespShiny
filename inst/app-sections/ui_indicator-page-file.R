@@ -9,7 +9,7 @@ tabPanel(
   selectInput(
     inputId = "i_species2",
     label = "Species",
-    choices = NEesp::species_key$Species
+    choices = c(NEesp::species_key$Species, "NO SPECIES - TEST")
   ),
   
   h3("Do you have R scripts that need to be sourced?"),

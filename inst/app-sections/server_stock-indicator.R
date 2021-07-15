@@ -1,5 +1,15 @@
 # stock-indicator analysis ----
 
+# add Var options
+
+react_var <- observeEvent(input$si_file$datapath, {
+  data <- NEesp::read_file(input$si_file$datapath)
+  
+  output$var <- renderUI({
+    selectInput("var_options", label = "Indicator", choices = unique(data$Var))
+  })
+  })
+
 ## display graph ----
 
 # reactive expression so it doesn't change when the parameters are changed
@@ -17,27 +27,15 @@ react_plot <- eventReactive(input$go3, {
   on.exit(removeNotification(id), add = TRUE)
   
   # show report
-  
-  if (input$si_pattern == "ex: north, south, fall...") {
-    new_pattern <- NULL
-    new_remove <- NULL
-  } else {
-    new_pattern <- input$si_pattern %>%
-      stringr::str_split(pattern = ", ")
-    
-    new_remove <- input$si_remove %>%
-      stringr::str_split(pattern = ", ")
-  }
-  
-  NEesp::wrap_analysis(
-    file_path = input$si_file$datapath,
-    metric = input$si_metric,
-    pattern = new_pattern,
-    remove = new_remove,
-    lag = as.numeric(input$si_lag),
-    species = input$si_species,
-    mode = "shiny"
+  dat <- NEesp::prep_si_data(file_path = input$si_file$datapath,
+                         metric = input$si_metric,
+                         var = input$var_options)
+  plt <- NEesp::plot_corr_only(data = dat,
+                        lag = as.numeric(input$si_lag),
+                        species = input$si_species,
+                        mode = "shiny"
   )
+  print(plt)
   
   output$add_to_rpt <- renderUI({
     actionButton("go4", "Add to report")
@@ -51,28 +49,8 @@ react_plot <- eventReactive(input$go3, {
 })
 
 # render reactive output
-# output$stock_indicator <- renderPlot({react_plot()},
-#                                     height = 3200)
-
-# height based on Var
-react_h <- eventReactive(input$go3, {
-  dat <- read.csv(input$si_file$datapath)
-  h <- length(unique(dat$Var))
-  h
-})
-
-# render reactive output
-observeEvent(react_h(), {
-  h <- as.numeric(react_h()) * 800
-  
-  output$stock_indicator <- renderPlot(
-    {
-      react_plot()
-    },
-    height = h
-  )
-})
-
+ output$stock_indicator <- renderPlot({react_plot()},
+                                     height = 800)
 
 ## add to report ----
 observeEvent(input$go4, {
@@ -87,10 +65,14 @@ observeEvent(input$go4, {
   
   on.exit(removeNotification(id), add = TRUE)
   
-  # must set file path, pattern (or null), remove (or null), metric, and lag
-  # set species when rendering rmd
   path <- paste(tempdir(), "/SI-BOOK/",
-                input$si_file$name %>% stringr::str_remove(".csv"),
+                input$si_file$name %>% 
+                  stringr::str_remove(".csv") %>% 
+                  stringr::str_remove(".RDS"),
+                "_",
+                input$var_options %>%
+                  stringr::str_replace_all(" ", "_") %>%
+                  stringr::str_replace_all("\n", "_"),
                 ".Rmd",
                 sep = ""
   )
@@ -107,37 +89,20 @@ observeEvent(input$go4, {
     first <- readLines(con = path) %>%
       paste(collapse = "\n")
   }
-  
-  if (input$si_pattern == "ex: north, south, fall...") {
-    new_pattern <- toString("NULL")
-    new_remove <- toString("NULL")
-  } else {
-    new_pattern <- input$si_pattern %>%
-      stringr::str_split(pattern = ", ")
-    
-    new_remove <- input$si_remove %>%
-      stringr::str_split(pattern = ", ")
-  }
-  
-  # print(input$si_file$datapath %>% stringr::str_replace_all("\\\\", "/"))
-  
+
   writeLines(
-    text = paste(first, "\n\n",
-                 "```{r}\n",
-                 "file_name <- '", input$si_file$name, "'\n",
-                 "file <- '", input$si_file$datapath %>% stringr::str_replace_all("\\\\", "/"), "'\n",
-                 "met <- '", input$si_metric, "'\n",
-                 "pat <- ", new_pattern, "\n",
-                 "rem <- ", new_remove, "\n",
-                 "lag <- ", as.numeric(input$si_lag), "\n",
-                 "res <- knitr::knit_child(
-                            text = knitr::knit_expand(
-                            system.file('summary_esp_template/child.Rmd', package = 'NEesp')
-                            ),
-                            quiet = TRUE
-                            )
-                            cat(res, sep = '\\n\\n')", "\n",
-                 "```",
+    text = paste(first, 
+                 "\n\n",
+                 knitr::knit_expand(system.file('summary_esp_template/child.Rmd', package = 'NEesp')),
+#                 "```{r}\n",
+#                 "res <- knitr::knit_child(
+#                            text = knitr::knit_expand(
+#                            system.file('summary_esp_template/child.Rmd', package = 'NEesp')
+#                            ),
+#                            quiet = TRUE
+#                            )
+#                            cat(res, sep = '\\n\\n')", "\n",
+#                 "```",
                  sep = ""
     ),
     con = path
@@ -207,7 +172,6 @@ output$go5 <- downloadHandler(
     if (stringr::str_detect(toString(data_added), "end.Rmd")) {
       data_added <- data_added[-stringr::str_which(data_added, "end.Rmd")]
     }
-    print(stringr::str_detect(toString(data_added), "report.Rmd"))
     if (stringr::str_detect(toString(data_added), "report.Rmd")) {
       data_added <- data_added[-stringr::str_which(data_added, "report.Rmd")]
     }
@@ -235,7 +199,6 @@ output$go5 <- downloadHandler(
     # knit rmd file
     rmarkdown::render(
       input = path2,
-      params = list(species = input$si_species),
       envir = new.env() # render in clean env or else `file` variable will mess up download later
     )
     

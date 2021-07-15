@@ -3,7 +3,7 @@
 re2 <- eventReactive(
   input$go2,
   {
-    
+
     # rendering message
     id <- showNotification(
       "Rendering report...",
@@ -11,9 +11,9 @@ re2 <- eventReactive(
       closeButton = FALSE,
       type = "message"
     )
-    
+
     on.exit(removeNotification(id), add = TRUE)
-    
+
     # source R scripts if necessary
     if (class(input$test_script) == "data.frame") {
       lapply(
@@ -21,7 +21,7 @@ re2 <- eventReactive(
         source
       )
     }
-    
+
     # create temp dir
     this_dir <- paste(tempdir(), "BOOK", sep = "/")
     dir.create(this_dir)
@@ -29,14 +29,14 @@ re2 <- eventReactive(
     # bookdown needs it
     # downloading zip file needs it (only sometimes???)
     setwd(this_dir)
-    
+
     # render report
     render_ind_page_shiny(
       x = input$i_species2,
       input = "custom",
       file = input$test_file
     )
-    
+
     # show report
     includeHTML(paste(this_dir, "custom_output.html", sep = "/"))
   }

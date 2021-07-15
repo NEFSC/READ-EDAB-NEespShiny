@@ -15,7 +15,7 @@
 # extract html between <body> </body> - suggested fix but doesn't work
 
 observeEvent(input$go, {
-  
+
   # rendering message
   id <- showNotification(
     "Rendering report...",
@@ -23,9 +23,9 @@ observeEvent(input$go, {
     closeButton = FALSE,
     type = "message"
   )
-  
+
   on.exit(removeNotification(id), add = TRUE)
-  
+
   # create temp dir
   this_dir <- paste(tempdir(), "BOOK", sep = "/")
   dir.create(this_dir)
@@ -33,16 +33,16 @@ observeEvent(input$go, {
   # bookdown needs it
   # downloading zip file needs it (only sometimes???)
   setwd(this_dir)
-  
+
   # render report
   render_ind_page_shiny(
     x = input$i_species,
     input = "package",
     file = input$indicator
   )
-  
+
   # show report
-  
+
   output$markdown <- renderUI({
     tags$iframe(
       srcdoc = htmltools::HTML(readLines(paste(this_dir, "package_output.html", sep = "/"))),

@@ -1,14 +1,14 @@
 # regression report ----
 output$report <- downloadHandler(
-  
+
   # create file name
   filename = function() {
     paste(input$species, "_regression_report.zip", sep = "")
   },
-  
+
   # create file content
   content = function(file) {
-    
+
     # rendering message
     id <- showNotification(
       "Rendering report...",
@@ -17,7 +17,7 @@ output$report <- downloadHandler(
       type = "message"
     )
     on.exit(removeNotification(id), add = TRUE)
-    
+
     # create temp dir
     this_dir <- paste(tempdir(), "BOOK", sep = "/")
     dir.create(this_dir)
@@ -25,7 +25,7 @@ output$report <- downloadHandler(
     # bookdown needs it
     # downloading zip file needs it (only sometimes???)
     setwd(this_dir)
-    
+
     # render report
     render_reg_report_shiny(
       stock_var = input$species,
@@ -36,7 +36,7 @@ output$report <- downloadHandler(
       file_var = paste(input$species, "_regression_report.docx", sep = ""),
       save_var = TRUE
     )
-    
+
     # copy to zip file for download
     file.copy(
       from = "testZip.zip",

@@ -4,7 +4,7 @@
 
 [![](https://img.shields.io/badge/devel%20version-0.1.1-blue.svg)](https://github.com/NOAA-EDAB/NEespShiny)
 [![](https://img.shields.io/github/last-commit/NOAA-EDAB/NEespShiny.svg)](https://github.com/NOAA-EDAB/NEespShiny/commits/dev)
-[![](https://img.shields.io/badge/repo%20size-16.8%20MB-blue.svg)](https://github.com/NOAA-EDAB/NEespShiny)
+[![](https://img.shields.io/badge/repo%20size-15.8%20MB-blue.svg)](https://github.com/NOAA-EDAB/NEespShiny)
 [![](https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg)](https://github.com/NOAA-EDAB/NEespShiny/actions/workflows/secretScan.yml)
 
 ## View current data products

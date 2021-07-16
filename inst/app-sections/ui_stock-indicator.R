@@ -34,18 +34,6 @@ tabPanel(
     choices = 0:10
   ),
 
-  #  textInput(
-  #    inputId = "si_pattern",
-  #    label = "Are there any patterns that should be filtered from the `Var` column? Separate multiple entries with a comma",
-  #    value = "ex: north, south, fall..."
-  #  ),
-
-  #  textInput(
-  #    inputId = "si_remove",
-  #    label = "Should patterns be removed (TRUE) or retained (FALSE)? Separate multiple entries with a comma",
-  #    value = "ex: TRUE, TRUE, FALSE..."
-  #  ),
-
   uiOutput("var"),
   p(""),
 
@@ -58,7 +46,5 @@ tabPanel(
   uiOutput("download_rpt"),
 
   h4(""),
-  plotOutput(
-    "stock_indicator"
-  )
+  plotOutput("stock_indicator")
 )

@@ -1,4 +1,5 @@
 # stock-indicator analysis ----
+folder <- paste0(tempdir(), "/SI-BOOK")
 
 # add Var options
 
@@ -40,6 +41,7 @@ react_plot <- eventReactive(input$go3, {
   )
   print(plt)
 
+  # create more buttons
   output$add_to_rpt <- renderUI({
     actionButton("go4", "Add to report")
   })
@@ -76,16 +78,21 @@ observeEvent(input$go4, {
   fname <- paste0(input$si_metric, "_", input$var_options, ".Rmd") %>%
     stringr::str_replace_all(" ", "_") %>%
     stringr::str_replace_all("\n", "_") %>%
-    stringr::str_remove_all(paste0("_", input$si_species %>% stringr::str_replace_all(" ", "_")))
+    stringr::str_remove_all(paste0("_", 
+                                   input$si_species %>% 
+                                     stringr::str_replace_all(" ", "_")
+                                   )
+                            )
+  
+#  folder <- paste0(tempdir(), "/SI-BOOK")
+  dir.create(folder)
 
-  path <- paste0(tempdir(), "/SI-BOOK/", fname)
+  path <- paste0(folder, "/", fname)
 
   # clear file and re-write if it already exists
   if (file.exists(path)) {
     file.remove(path)
   }
-
-  dir.create(paste(tempdir(), "SI-BOOK", sep = "/"))
 
   pat <- input$si_file$datapath %>%
     stringr::str_replace_all("\\\\", "\\\\\\\\")
@@ -96,10 +103,9 @@ observeEvent(input$go4, {
   )
 
   data_added <- list.files(
-    path = paste(tempdir(), "SI-BOOK", sep = "/"),
+    path = folder,
     pattern = ".Rmd"
   )
-  print(data_added)
   if ("intro.Rmd" %in% data_added) {
     data_added <- data_added[-which(data_added == "intro.Rmd")]
   }
@@ -123,7 +129,7 @@ output$go5 <- downloadHandler(
 
   # create file name
   filename = function() {
-    paste(input$si_species, "_esp_skeleton.zip", sep = "")
+    paste0(input$si_species, "_esp_skeleton.zip")
   },
 
   # create file content
@@ -148,7 +154,7 @@ output$go5 <- downloadHandler(
 
     # body
     data_added <- list.files(
-      path = paste(tempdir(), "SI-BOOK", sep = "/"),
+      path = folder,
       full.names = TRUE,
       pattern = ".Rmd"
     )
@@ -172,7 +178,7 @@ output$go5 <- downloadHandler(
       )
     }
 
-    path2 <- paste(tempdir(), "SI-BOOK", "report.Rmd", sep = "/")
+    path2 <- paste0(folder, "/", "report.Rmd")
     # clear file and re-write if it already exists
     if (file.exists(path2)) {
       file.remove(path2)
@@ -192,13 +198,13 @@ output$go5 <- downloadHandler(
     # zip files
     files2zip <- c(
       list.files(
-        path = paste(tempdir(), "SI-BOOK", sep = "/"),
+        path = folder,
         full.names = TRUE,
         recursive = TRUE,
         pattern = "report.doc"
       ),
       list.files(
-        path = paste(tempdir(), "SI-BOOK", sep = "/"),
+        path =  folder,
         full.names = TRUE,
         recursive = TRUE,
         pattern = ".png"
@@ -206,13 +212,13 @@ output$go5 <- downloadHandler(
     )
 
     # can't have figures folder without changing working directory or listing all parent directories up to ~
-    utils::zip(paste(tempdir(), "SI-BOOK", "testZip", sep = "/"),
+    utils::zip(paste0(folder, "/", "testZip"),
       files = files2zip,
       flags = "-j"
     )
 
     file.copy(
-      from = paste(tempdir(), "SI-BOOK", "testZip.zip", sep = "/"),
+      from = paste0(folder, "/", "testZip.zip"),
       to = file
     )
   },

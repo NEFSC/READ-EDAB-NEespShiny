@@ -1,6 +1,6 @@
 # NEespShiny
 
-**Apps Name**: [NEespShiny](https://github.com/NOAA-EDAB/NEespShiny)
+**App's Name**: [NEespShiny](https://github.com/NOAA-EDAB/NEespShiny)
 
 **Developer(s)**: Abby Tyrell
   
@@ -25,7 +25,7 @@ There are five functionalities in the shiny app:
 The user can select any of the `.Rmd` files that are saved in the package indicator template, and the report page for the species selected will be displayed.
 
 ```{r, echo=FALSE}
-image.dir <- here::here("shiny-book")
+image.dir <- here::here("images")
 knitr::include_graphics(file.path(image.dir,"tab1.png"))
 ```
 

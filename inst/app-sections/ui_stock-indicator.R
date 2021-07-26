@@ -5,7 +5,7 @@ tabPanel(
   h2("Stock-Indicator Analysis"),
 
   h3("Select your input file"),
-  p("This should be a .csv outputted from the 'Download a Regression Report' tab."),
+  p("This should be a .csv or .RDS file outputted from the 'Download a Regression Report' tab."),
   fileInput(
     inputId = "si_file",
     label = "Choose file to use",

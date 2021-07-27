@@ -147,9 +147,9 @@ output$go5 <- downloadHandler(
 
     # create rmd file
     # beginning and end
-    intro <- readLines(system.file("summary_esp_template/intro.Rmd", package = "NEesp")) %>%
+    intro <- readLines(con = system.file("summary_esp_template/intro.Rmd", package = "NEesp")) %>%
       paste(collapse = "\n")
-    end <- readLines(system.file("summary_esp_template/end.Rmd", package = "NEesp")) %>%
+    end <- readLines(con = system.file("summary_esp_template/end.Rmd", package = "NEesp")) %>%
       paste(collapse = "\n")
 
     # body
@@ -172,7 +172,7 @@ output$go5 <- downloadHandler(
     for (i in data_added) {
       print(i)
       body <- paste(body,
-        readLines(i) %>%
+        readLines(con = i) %>%
           paste(collapse = "\n"),
         sep = "\n\n"
       )

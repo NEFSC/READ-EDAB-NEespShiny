@@ -93,7 +93,9 @@ observeEvent(input$go4, {
   if (file.exists(path)) {
     file.remove(path)
   }
+  file.create(path)
 
+  # `pat` variable used in child doc
   pat <- input$si_file$datapath %>%
     stringr::str_replace_all("\\\\", "\\\\\\\\")
 

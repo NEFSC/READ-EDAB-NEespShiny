@@ -98,9 +98,12 @@ observeEvent(input$go4, {
   # `pat` variable used in child doc
   pat <- input$si_file$datapath %>%
     stringr::str_replace_all("\\\\", "\\\\\\\\")
+  
+  var_choice <- input$var_options %>%
+    stringr::str_replace_all("\n", " ")
 
   writeLines(
-    text = knitr::knit_expand(system.file("summary_esp_template/child.Rmd", package = "NEespShiny")),
+    text = knitr::knit_expand(system.file("summary_esp_template/child.Rmd", package = "NEesp")),
     con = path
   )
 

@@ -9,6 +9,9 @@ Authors@R: person("Abigail", "Tyrell", email = "abigail.tyrell@noaa.gov",
 Depends:
     shiny
 Imports:
+    bookdown,
+    ggplot2,
+    magrittr,
     NEesp
 Remotes:
     NOAA-EDAB/NEesp

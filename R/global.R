@@ -316,7 +316,7 @@ render_ind_page_shiny <- function(x,
 #' Erases the `www` folder in the NEespShiny library folder at the end of the session
 
 clean_www <- function() {
-  if ("NEespShiny" %in% installed.packages()) {
+  if ("NEespShiny" %in% utils::installed.packages()) {
     unlink(system.file("www",
       package = "NEespShiny",
       recursive = TRUE

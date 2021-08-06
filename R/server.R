@@ -4,6 +4,7 @@
 #'
 #' @param input Input for app
 #' @param output Output for app
+#' @param session App session
 #'
 #' @import shiny
 #' @importFrom magrittr %>%

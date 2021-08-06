@@ -10,6 +10,8 @@ server(input, output, session)
 \item{input}{Input for app}
 
 \item{output}{Output for app}
+
+\item{session}{App session}
 }
 \description{
 Server script code

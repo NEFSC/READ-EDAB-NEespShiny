@@ -3,7 +3,7 @@
 ^README\.Rmd$
 ^_pkgdown\.yml$
 ^\.Rproj\.user$
-^*\.Rproj$
+\.Rproj
 
 RData$
 Renviron$

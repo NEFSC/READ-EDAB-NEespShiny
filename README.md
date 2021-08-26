@@ -1,11 +1,11 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Ecosystem and Socioeconomic Profiles
+# Ecosystem and Socioeconomic Profiles <img src="https://raw.githubusercontent.com/NOAA-EDAB/esp_data_aggregation/abby/hexes/NEespShiny_hex.png" align="right" width="120" /> 
 
 [![](https://img.shields.io/badge/devel%20version-0.1.1-blue.svg)](https://github.com/NOAA-EDAB/NEespShiny)
-[![](https://img.shields.io/github/last-commit/NOAA-EDAB/NEespShiny.svg)](https://github.com/NOAA-EDAB/NEespShiny/commits/main)
-![](https://img.shields.io/badge/repo%20size-13.9%20MB-blue.svg)
-[![](https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg)](https://github.com/NOAA-EDAB/NEespShiny/actions)
+[![](https://img.shields.io/github/last-commit/NOAA-EDAB/NEespShiny.svg)](https://github.com/NOAA-EDAB/NEespShiny/commits/dev)
+[![](https://img.shields.io/badge/repo%20size-15.9%20MB-blue.svg)](https://github.com/NOAA-EDAB/NEespShiny)
+[![](https://github.com/NOAA-EDAB/NEespShiny/workflows/gitleaks/badge.svg)](https://github.com/NOAA-EDAB/NEespShiny/actions/workflows/secretScan.yml)
 
 ## View current data products
 https://noaa-edab.github.io/ESP_docs/docs
@@ -62,3 +62,6 @@ endorsement, recommendation or favoring by the Department of Commerce.
 The Department of Commerce seal and logo, or the seal and logo of a DOC
 bureau, shall not be used in any manner to imply endorsement of any
 commercial product or activity by DOC or the United States Government.*
+
+#### Pkgdown site
+The pkgdown site is being built from the `dev` branch.

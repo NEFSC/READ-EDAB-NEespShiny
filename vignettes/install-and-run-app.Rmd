@@ -1,0 +1,46 @@
+---
+title: "Install and run app"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Install and run app}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  eval = FALSE
+)
+```
+
+## Install `NEespShiny` package
+
+Install the versioned package:
+```{r}
+remotes::install_github("NOAA-EDAB/NEesp", ref = "v0.1.0")
+```
+
+Or install the most recent development package:
+```{r}
+remotes::install_github("NOAA-EDAB/NEesp", ref = "dev")
+```
+
+## Run `NEespShiny` package
+
+```{r}
+NEespShiny::run_NEesp()
+```
+
+## Troubleshooting
+- Override package installation errors from warnings: 
+```{r}
+Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true")
+```
+
+- You must also have the [`NEesp` package](https://github.com/NOAA-EDAB/NEesp) installed to run the `NEespShiny` app. Explicitly install `NEesp`:
+```{r}
+remotes::install_github("NOAA-EDAB/NEesp", ref = "v0.1.0")
+```

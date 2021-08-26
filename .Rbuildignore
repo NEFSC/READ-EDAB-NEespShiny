@@ -1,14 +1,18 @@
 ^LICENSE\.txt$
 ^README\.md$
+^README\.Rmd$
 ^_pkgdown\.yml$
 ^\.Rproj\.user$
-^.*\.Rproj$
+^NEespShiny\.Rproj
 
 RData$
 Renviron$
 Rhistory$
 
-^\.github\*$
+^\.github$
 ^docs$
 ^black-sea-bass$
 ^pkgdown$
+^inst/bookdown$
+^shiny-book$
+^www$

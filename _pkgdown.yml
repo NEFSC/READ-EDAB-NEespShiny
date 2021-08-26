@@ -1,0 +1,60 @@
+url: https://noaa-edab.github.io/NEespShiny/
+
+news:
+  one_page: true
+
+authors:
+  Abigail Tyrell:
+    href: https://github.com/atyrell3
+    
+navbar:
+  left:
+    - text: "Vignettes"
+      menu:
+      -  text: "Install and run app"
+         href: articles/install-and-run-app.html
+      -  text: "Why ESP?"
+         href: articles/why-esp.html
+
+    - text: "Functions"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+  right:
+    - icon: fas fa-paper-plane fa-lg
+      href: mailto:abigail.tyrell@noaa.gov
+    - icon: fas fa-question-circle fa-lg
+      href: https://github.com/NOAA-EDAB/NEespShiny/issues/
+    - icon: fab fa-github fa-lg
+      href: https://github.com/NOAA-EDAB/NEespShiny
+    - icon: fa-fish
+      href: https://nmfs-general-modeling-tools.github.io/
+
+articles:
+  - title: "NEespShiny Vignettes"
+    desc: >
+      These vignettes provide an introduction to how to run the NEespShiny app with the
+      **NEespShiny** package. <br/>
+      <br/>
+    contents:
+      - install-and-run-app
+      - why-esp
+
+reference:
+  - title: Front-end function
+    desc: The only function you need to run the app
+    contents:
+      - run_NEesp     
+  - title: Back-end functions
+    desc: Behind-the-scenes functions that make the app run
+    contents:      
+      - server      
+      - ui
+      - render_ind_page_shiny 
+      - render_ind_report_shiny
+      - render_reg_report_shiny
+      - clean_book
+      - clean_www 
+
+template:
+  package: preferably

@@ -1,6 +1,16 @@
 on:
   workflow_dispatch:
-
+  push:
+    branches:
+      - dev
+    paths:
+      - 'vignettes/**'
+      - 'NEWS.md'
+      - 'README.md'
+      - 'DESCRIPTION'
+      - 'LICENSE'
+      - '_pkgdown.yml'
+      
 name: Deploy pkgdown
 
 jobs: 
@@ -21,7 +31,7 @@ jobs:
       - name: Install command line packages
         run: |        
           sudo apt update
-          sudo apt-get install  libgdal-dev libcurl4-gnutls-dev libgit2-dev libudunits2-dev
+          sudo apt-get install  libgdal-dev libcurl4-gnutls-dev libgit2-dev libudunits2-dev libharfbuzz-dev libfribidi-dev
         shell: bash
         
       - name: Set up R
@@ -34,17 +44,21 @@ jobs:
         id: cache
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: big-cache-DESCRIPTION-02172021-2
+          key: pkgdown-cache-05172021-AT
 
-      - name: Load R packages (if not cached)
+
+      - name: Load R packages
+      
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           sudo R CMD javareconf
-          Rscript -e 'install.packages(c("pkgdown", "stringi", "car"))
+          Rscript -e 'install.packages(c("pkgdown", "stringi", "car", "devtools"), dependencies = TRUE)
+          devtools::install_github("NOAA-EDAB/NEespShiny", ref = "v0.1.0", upgrade = "never")'
           
       - name: Render pkgdown
         run: |
-          Rscript -e 'pkgdown::build_site()'
+          Rscript -e 'install.packages("preferably")
+          pkgdown::build_site()'
           
       - name: Deploy to Github
         uses: JamesIves/github-pages-deploy-action@4.1.1

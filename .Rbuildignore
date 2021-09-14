@@ -17,3 +17,5 @@ Rhistory$
 ^inst/bookdown$
 ^shiny-book$
 ^www$
+^.*\.Rproj$
+

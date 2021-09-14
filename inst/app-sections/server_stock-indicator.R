@@ -78,6 +78,7 @@ observeEvent(input$go4, {
   fname <- paste0(input$si_metric, "_", input$var_options, ".Rmd") %>%
     stringr::str_replace_all(" ", "_") %>%
     stringr::str_replace_all("\n", "_") %>%
+    stringr::str_replace_all("/", "_") %>%
     stringr::str_remove_all(paste0("_", 
                                    input$si_species %>% 
                                      stringr::str_replace_all(" ", "_")

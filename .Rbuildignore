@@ -13,7 +13,9 @@ Rhistory$
 ^docs$
 ^black-sea-bass$
 ^pkgdown$
+^app.R
 ^inst/bookdown$
 ^shiny-book$
 ^www$
 ^.*\.Rproj$
+

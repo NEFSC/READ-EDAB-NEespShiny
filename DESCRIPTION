@@ -14,7 +14,7 @@ Imports:
     magrittr,
     NEesp
 Remotes:
-    NOAA-EDAB/NEesp
+    NEFSC/READ-EDAB-NEesp
 Encoding: UTF-8
 LazyData: false
 Roxygen: list(markdown = TRUE)

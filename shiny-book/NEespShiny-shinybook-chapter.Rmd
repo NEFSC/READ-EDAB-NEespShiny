@@ -1,6 +1,6 @@
 # NEespShiny
 
-**App's Name**: [NEespShiny](https://github.com/NOAA-EDAB/NEespShiny)
+**App's Name**: [NEespShiny](https://github.com/NEFSC/READ-EDAB-NEespShiny)
 
 **Developer(s)**: Abby Tyrell
   
@@ -10,11 +10,11 @@
 
 **Key Packages**: `NEesp`, `bookdown`, `ggplot2`, `dplyr`
 
-**GitHub**: [NOAA-EDAB/NEespShiny](https://github.com/NOAA-EDAB/NEespShiny)
+**GitHub**: [NEFSC/READ-EDAB-NEespShiny](https://github.com/NEFSC/READ-EDAB-NEespShiny)
 
 ## Application Purpose
 
-This shiny app is a graphical user interface for the [`NEesp` package](https://noaa-edab.github.io/NEesp/), which was developed to gather and display ecosystem and socioeconomic data for Northeast stocks. The `NEEsp` package assembles existing data, such as survey data, catch and landings, physical oceanography data, and trophic information, and integrates these data into reports using Rmarkdown templates. The Rmarkdown templates are rendered into reports with `bookdown`, so each report section can be saved as its own `.Rmd` file. 
+This shiny app is a graphical user interface for the [`NEesp` package](https://nefsc.github.io/READ-EDAB-NEesp/), which was developed to gather and display ecosystem and socioeconomic data for Northeast stocks. The `NEEsp` package assembles existing data, such as survey data, catch and landings, physical oceanography data, and trophic information, and integrates these data into reports using Rmarkdown templates. The Rmarkdown templates are rendered into reports with `bookdown`, so each report section can be saved as its own `.Rmd` file. 
 
 The `NEespShiny` app allows users to create reports without needing to directly work with the `NEesp` code. 
 
